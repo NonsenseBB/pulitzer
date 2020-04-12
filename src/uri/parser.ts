@@ -10,16 +10,21 @@ import {
   ProcessSettings,
 } from '../types'
 
-const SETTINGS_SEPARATOR = `${config.http.path_separator}/`
 const MAX_WIDTH_REGEX = /mw-(\d+)/
 const FORMAT_REGEX = /ff-(png|webp|jpeg|jpg)/i
 const SIZE_REGEX = /(\d+)x(\d+)/
 const FIT_REGEX = /(cover|contain|fill|inside|outside)/
 
+const URI_PARSE_REGEX = new RegExp(
+  `(.*)/${config.http.path_separator.replace(/[-/\\^$*+?.()|[\]{}]/g, '\\$&')}/(.*)/_/(.*)`,
+)
+
 export function parseURI(uri): ProcessOptions | undefined {
   const pathname = (new URL(uri, 'http://0.0.0.0')).pathname
 
   const objectName = pathname.replace(/^\//, '') // remove leading slash
+
+  const parts = pathname.match(URI_PARSE_REGEX)
 
   const result: ProcessOptions = {
     transformed: pathname.replace(/^\//, ''), // remove leading slash
@@ -30,14 +35,12 @@ export function parseURI(uri): ProcessOptions | undefined {
     },
   }
 
-  const idx = objectName.lastIndexOf(SETTINGS_SEPARATOR)
-
-  if (idx === -1) {
+  if (!parts) {
     return result
   }
 
-  const original = objectName.substring(0, idx)
-  const settingsStr = objectName.substring(idx + SETTINGS_SEPARATOR.length).split('/')
+  const original = `${parts[1]}/${parts[3]}`
+  const settingsStr = parts[2].split('/')
 
   let hasSettings = false
   const settings: ProcessSettings = settingsStr.reduce(
