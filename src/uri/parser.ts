@@ -39,8 +39,8 @@ export function parseURI(uri): ProcessOptions | undefined {
     return result
   }
 
-  const original = `${parts[1]}/${parts[3]}`
-  const settingsStr = parts[2].split('/')
+  const original = `${parts[1]}/${parts[3]}`.replace(/^\//, '') // remove leading slash
+  const settingsStr = parts[2].split('/').filter(item => !!item)
 
   let hasSettings = false
   const settings: ProcessSettings = settingsStr.reduce(
