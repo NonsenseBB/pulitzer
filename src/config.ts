@@ -3,7 +3,7 @@ require('dotenv').config()
 
 const { ConnectionString } = require('connection-string')
 
-const DEFAULT_HTTP_PORT = 8000
+const DEFAULT_HTTP_PORT = 8080
 const DEFAULT_S3_ENDPOINT = 's3.amazonaws.com'
 const DEFAULT_HTTP_MAX_AGE = 60 * 60 * 24 * 365 // 1 year
 const DEFAULT_PATH_SEPARATOR = '__processed'
