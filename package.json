@@ -1,0 +1,66 @@
+{
+  "name": "pulitzer",
+  "version": "0.0.1",
+  "description": "Image resizing proxy",
+  "main": "src/index.ts",
+  "scripts": {
+    "start": "node ./build/index.js",
+    "debug": "nodemon",
+    "build": "tsc",
+    "clean": "rm -rf build",
+    "test": "jest",
+    "fix": "npm run fix:js",
+    "fix:js": "eslint ${ESLINT_OPTS} --fix --ext .js --ext .ts src",
+    "lint": "npm run lint:js",
+    "lint:js": "eslint ${ESLINT_OPTS} --ext .js --ext .ts src"
+  },
+  "keywords": [
+    "image",
+    "resizing",
+    "proxy",
+    "http"
+  ],
+  "author": "Luis Nabais <luis@nabais.me>",
+  "license": "MIT",
+  "repository": "git@github.com:d3x7r0/pulitzer.git",
+  "dependencies": {
+    "connection-string": "^3.2.0",
+    "dotenv": "^8.2.0",
+    "express": "^4.17.1",
+    "minio": "^7.0.15",
+    "sharp": "^0.25.2"
+  },
+  "devDependencies": {
+    "@types/express": "^4.17.6",
+    "@types/jest": "^25.2.1",
+    "@types/minio": "^7.0.5",
+    "@types/node": "^13.11.1",
+    "@types/sharp": "^0.24.0",
+    "@typescript-eslint/eslint-plugin": "^2.27.0",
+    "@typescript-eslint/parser": "^2.27.0",
+    "eslint": "^6.8.0",
+    "eslint-plugin-import": "^2.20.2",
+    "eslint-plugin-promise": "^4.2.1",
+    "jest": "^25.3.0",
+    "nodemon": "^2.0.3",
+    "ts-jest": "^25.3.1",
+    "ts-node": "^8.8.2",
+    "typescript": "^3.8.3"
+  },
+  "jest": {
+    "preset": "ts-jest",
+    "testEnvironment": "node"
+  },
+  "nodemonConfig": {
+    "ignore": [
+      ".git",
+      "node_modules"
+    ],
+    "watch": [
+      "src",
+      ".env"
+    ],
+    "exec": "node -r ts-node/register src/index.ts",
+    "ext": "js,ts,env"
+  }
+}
