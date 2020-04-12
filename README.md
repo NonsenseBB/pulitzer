@@ -10,7 +10,7 @@ Example:
 Will proxy to
 > s3://my-configured-bucket/uploads/2020/01/picture.jpg
 
-and apply a 4x3 crop with a max width of 760px and convert the file format to WebP.
+and apply a 4x3 crop with a max width of 760px while also converting the file format to WebP.
 It will also store the converted file to S3 with the same path as the url:
 > s3://my-configured-bucket/__processed/4x3/mw-760/ff-webp/_/uploads/2020/01/picture.jpg
 
@@ -21,7 +21,8 @@ This allows the file to be served from S3 afterwards.
 - `mw-<width>` - max width of `<width>` pixels
 - `<width>x<height>` - resizes the image to a given `<width>` and `<height>`. If max width is enabled works as a ratio instead
 - `ff-<format>` - converts the result to one of JPEG, PNG or WEBP
-- `<fit>` - Allows the control of the "fit" of the image when resizing. Allowed values are `cover|contain|fill|inside|outside`. [For more info check Sharp's documentation](https://sharp.pixelplumbing.com/api-resize)
+- `<fit>` - Allows the control of the "fit" of the image when resizing.
+           Allowed values are `cover|contain|fill|inside|outside`. [For more info check Sharp's documentation](https://sharp.pixelplumbing.com/api-resize)
 
 ### Environment Variables
 
@@ -35,4 +36,4 @@ This allows the file to be served from S3 afterwards.
 - `HTTP_PORT` - The http port to use. Defaults to `8080`
 - `HTTP_PATH_SEPARATOR` - The separator string to use in the beginning of the settings bit of the url. Defaults to `__processed`
 
-- `STORE_IMAGES` - Flag to toggle storing of transformed images to the object storage system. Defaults to `true`#STORE_IMAGES=true
+- `STORE_IMAGES` - Flag to toggle storing of transformed images to the object storage system. Defaults to `true`
