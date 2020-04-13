@@ -55,6 +55,7 @@ export type ProcessSettings = {
   width?: number;
   height?: number;
   fit: FitEnum;
+  preview: boolean;
 }
 
 export type ProcessOptions = {

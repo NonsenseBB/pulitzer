@@ -71,7 +71,7 @@ export async function process(opts: ProcessOptions, data: BucketItemStat, stream
   const { settings } = opts
   const resizeOptions = buildResizeOptions(settings)
 
-  if (!resizeOptions && settings.format === ImageFormat.ORIGINAL) {
+  if (!resizeOptions && settings.format === ImageFormat.ORIGINAL && !settings.preview) {
     console.debug(
       'no transformations required, do nothing',
       { objectName: opts.transformed, contentType: ctx.contentType },
@@ -103,7 +103,24 @@ export async function process(opts: ProcessOptions, data: BucketItemStat, stream
   }
   let transformer = sharp()
 
-  if (resizeOptions) {
+  if (settings.preview) {
+    console.debug('Will generate preview', { objectName: opts.transformed })
+
+    // TODO: allow configuration of default width and blur radius
+    const o = resizeOptions || {
+      width: 42,
+      height: 42,
+      withoutEnlargement: true,
+    }
+
+    transformer = transformer
+      .blur(10.5) // sigma = 1 + radius / 2; radius = 20; sigma = 10.5
+      .resize({
+        fit: sharp.fit.inside,
+        kernel: sharp.kernel.nearest,
+        ...o,
+      })
+  } else if (resizeOptions) {
     console.debug('Will resize', { objectName: opts.transformed })
     transformer = transformer.resize(resizeOptions)
   }
@@ -118,6 +135,9 @@ export async function process(opts: ProcessOptions, data: BucketItemStat, stream
     const format = settings.format.toString().toLowerCase()
     contentType = `image/${format}`
     transformer = transformer.toFormat(format)
+  } else if (settings.preview) {
+    contentType = `image/jpg`
+    transformer = transformer.jpeg({ quality: 40 })
   }
 
   const transformedStream = stream.pipe(transformer)

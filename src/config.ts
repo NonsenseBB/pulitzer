@@ -14,7 +14,7 @@ const pathSeparator = (process.env.HTTP_PATH_SEPARATOR || DEFAULT_PATH_SEPARATOR
   .replace(/\/$/g, ' ') // remove trailing slash
 
 export default {
-  store_images: Boolean(process.env.STORE_IMAGES || 'true'),
+  store_images: process.env.STORE_IMAGES !== 'false',
   s3: {
     endPoint: connection.hostname,
     port: connection.port as number | undefined,

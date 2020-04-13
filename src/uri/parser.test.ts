@@ -11,6 +11,7 @@ describe('parseURI()', () => {
       settings: {
         format: ImageFormat.ORIGINAL,
         fit: FitEnum.COVER,
+        preview: false,
       },
     } as ProcessOptions)
   })
@@ -27,21 +28,23 @@ describe('parseURI()', () => {
         maxWidth: 670,
         width: 4,
         height: 3,
+        preview: false,
       },
     } as ProcessOptions)
   })
 
   it('parses URIs with settings in the middle correctly', () => {
-    const result = parseURI('/uploads/2020/02/__processed/ff-webp/fill/1024x768/_/picture.jpg')
+    const result = parseURI('/uploads/2020/02/__processed/preview/ff-webp/fill/1024x768/_/picture.jpg')
 
     expect(result).toEqual({
-      transformed: 'uploads/2020/02/__processed/ff-webp/fill/1024x768/_/picture.jpg',
+      transformed: 'uploads/2020/02/__processed/preview/ff-webp/fill/1024x768/_/picture.jpg',
       original: 'uploads/2020/02/picture.jpg',
       settings: {
         format: ImageFormat.WEBP,
         fit: FitEnum.FILL,
         width: 1024,
         height: 768,
+        preview: true,
       },
     } as ProcessOptions)
   })
@@ -57,6 +60,7 @@ describe('parseURI()', () => {
         fit: FitEnum.FILL,
         width: 1024,
         height: 768,
+        preview: false,
       },
     } as ProcessOptions)
   })
@@ -72,6 +76,7 @@ describe('parseURI()', () => {
         fit: FitEnum.FILL,
         width: 1024,
         height: 768,
+        preview: false,
       },
     } as ProcessOptions)
   })
@@ -85,6 +90,7 @@ describe('parseURI()', () => {
       settings: {
         format: ImageFormat.ORIGINAL,
         fit: FitEnum.COVER,
+        preview: false,
       },
     } as ProcessOptions)
   })

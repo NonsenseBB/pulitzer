@@ -10,10 +10,11 @@ import {
   ProcessSettings,
 } from '../types'
 
-const MAX_WIDTH_REGEX = /mw-(\d+)/
+const MAX_WIDTH_REGEX = /mw-(\d+)/i
 const FORMAT_REGEX = /ff-(png|webp|jpeg|jpg)/i
-const SIZE_REGEX = /(\d+)x(\d+)/
-const FIT_REGEX = /(cover|contain|fill|inside|outside)/
+const SIZE_REGEX = /(\d+)x(\d+)/i
+const FIT_REGEX = /(cover|contain|fill|inside|outside)/i
+const PREVIEW_PARAM = 'preview'
 
 const URI_PARSE_REGEX = new RegExp(
   `(.*)/${config.http.path_separator.replace(/[-/\\^$*+?.()|[\]{}]/g, '\\$&')}/(.*)/_/(.*)`,
@@ -32,6 +33,7 @@ export function parseURI(uri): ProcessOptions | undefined {
     settings: {
       format: ImageFormat.ORIGINAL,
       fit: FitEnum.COVER,
+      preview: false,
     },
   }
 
@@ -90,6 +92,11 @@ export function parseURI(uri): ProcessOptions | undefined {
           hasSettings = true
           res = { ...res, fit }
         }
+      }
+
+      if (entry.trim().toLowerCase() === PREVIEW_PARAM) {
+        hasSettings = true
+        res = { ...res, preview: true }
       }
 
       return res
