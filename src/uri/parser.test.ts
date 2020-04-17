@@ -3,7 +3,7 @@ import { FitEnum, ImageFormat, ProcessOptions } from '../types'
 
 describe('parseURI()', () => {
   it('parses a URI without settings correctly', () => {
-    const result = parseURI('/uploads/2020/02/picture.jpg')
+    const result = parseURI('/uploads/20-20/02/picture.jpg')
 
     expect(result).toEqual({
       transformed: 'uploads/2020/02/picture.jpg',
