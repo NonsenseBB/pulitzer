@@ -1,6 +1,8 @@
 # pulitzer
 Image resizing and format converting proxy
 
+![CI](https://github.com/d3x7r0/pulitzer/workflows/CI/badge.svg?branch=master)
+
 ## What it does
 Pulitzer proxies all requests to an S3 compatible backend and adds some magic when some magic parameters are passed in the url.
 
