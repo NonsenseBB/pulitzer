@@ -2,6 +2,9 @@ name: CI
 
 on:
   push:
+    branches:
+      - master
+      - releases/**
   pull_request:
     types: [opened, synchronize, reopened, ready_for_review]
 
