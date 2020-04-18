@@ -30,7 +30,7 @@ This allows the file to be served from S3 afterwards.
 
 ### Health check
 
-The application also exposes an `/__health` endpoint you an use to check if the service is working or not.
+The application also exposes an `/__health` endpoint you can use to check if the service is working or not.
 When too many requests to object storage fail a circuit breaker will open and requests will be refused for a configurable amount of time to avoid cascading failures.
 
 ### Configuration
