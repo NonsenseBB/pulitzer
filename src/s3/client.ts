@@ -23,7 +23,12 @@ class S3Client {
     // FIXME: types for dispatch function
     // eslint-disable-next-line @typescript-eslint/ban-ts-ignore
     // @ts-ignore
-    this.#breaker = new CircuitBreaker(this.#dispatch, circuitBreakerOpts)
+    this.#breaker = new CircuitBreaker(this.#dispatch, {
+      ...circuitBreakerOpts,
+      errorFilter: (e): boolean => {
+        return e.code ? e.code !== 'NotFound' && e.code !== 'Forbidden' : true
+      },
+    })
 
     this.#breaker.on('close', () => console.info('Circuit breaker closed'))
     this.#breaker.on('halfOpen', () => console.error('Circuit breaker half open, next request will re-evaluate status'))
