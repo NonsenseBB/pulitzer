@@ -25,6 +25,7 @@ export default {
     secretKey: process.env.S3_SECRET_KEY as string,
   },
   circuitBreaker: {
+    enabled: process.env.CIRCUIT_BREAKER_ENABLED !== 'false',
     timeout: process.env.CIRCUIT_BREAKER_TIMEOUT as unknown as number,
     errorThresholdPercentage: process.env.CIRCUIT_BREAKER_ERROR_PERCENTAGE_THRESHOLD as unknown as number,
     resetTimeout: process.env.CIRCUIT_BREAKER_RESET_TIMEOUT as unknown as number,

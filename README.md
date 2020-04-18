@@ -53,6 +53,7 @@ You can configure the app using either a `.env` file or environment variables. T
 - `STORE_IMAGES` - Flag to toggle storing of transformed images to the object storage system. Defaults to `true`
 
 #### Health check config
+- `CIRCUIT_BREAKER_ENABLED` - Enable or disable the circuit breaker. Defaults to `true`
 - `CIRCUIT_BREAKER_TIMEOUT` - The time in milliseconds that action should be allowed to execute before timing out. Timeout can be disabled by setting this to false. Defaults 10000 (10 seconds)
 - `CIRCUIT_BREAKER_RESET_TIMEOUT` - The time in milliseconds to wait before setting the breaker to halfOpen state, and trying the action again. Defaults to 30000 (30 seconds)
 - `CIRCUIT_BREAKER_ERROR_PERCENTAGE_THRESHOLD` - The error percentage at which to open the circuit and start short-circuiting requests to fallback. Defaults to 50 (50%)
