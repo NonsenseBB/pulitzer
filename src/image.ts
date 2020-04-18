@@ -47,6 +47,7 @@ function storeTransformed(objectName, stream, contentType: string): void {
     .catch(err => console.warn(`Unable to save file ${objectName}`, err))
 }
 
+// TODO: add a circuit breaker to image processing as well
 export async function process(opts: ProcessOptions, data: BucketItemStat, stream: Stream): Promise<ProcessResult> {
   const ctx: ProcessResult = {
     data,

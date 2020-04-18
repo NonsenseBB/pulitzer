@@ -4,10 +4,10 @@ import config from './config'
 import { parseURI } from './uri/parser'
 import { getObject, statObject } from './s3/client'
 import { process } from './image'
+import withHealthCheck from './health'
 
-const app = express()
+const app = withHealthCheck(express())
 
-// TODO: control fit when scaling to a specific <w> x <h>
 // uri format: <object_path>/__processed/ff-<png|webp|jpeg>/mw-<max_width>/<w>x<h>/_/<filename>
 app.use((req, res) => {
   if (req.method !== 'GET' && req.method !== 'HEAD') {

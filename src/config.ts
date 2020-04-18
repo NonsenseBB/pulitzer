@@ -24,6 +24,11 @@ export default {
     accessKey: process.env.S3_ACCESS_KEY as string,
     secretKey: process.env.S3_SECRET_KEY as string,
   },
+  circuitBreaker: {
+    timeout: process.env.CIRCUIT_BREAKER_TIMEOUT as unknown as number,
+    errorThresholdPercentage: process.env.CIRCUIT_BREAKER_ERROR_PERCENTAGE_THRESHOLD as unknown as number,
+    resetTimeout: process.env.CIRCUIT_BREAKER_RESET_TIMEOUT as unknown as number,
+  },
   http: {
     port: (process.env.HTTP_PORT || DEFAULT_HTTP_PORT) as number,
     max_age: (process.env.HTTP_MAX_AGE || DEFAULT_HTTP_MAX_AGE) as number,
