@@ -1,6 +1,6 @@
 {
   "name": "pulitzer",
-  "version": "0.2.3",
+  "version": "0.2.4",
   "description": "Image resizing proxy",
   "main": "src/index.ts",
   "engines": {
