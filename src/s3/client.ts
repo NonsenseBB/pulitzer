@@ -26,7 +26,7 @@ class S3Client {
     this.#breaker = new CircuitBreaker(this.#dispatch, {
       ...circuitBreakerOpts,
       errorFilter: (e): boolean => {
-        return e.code ? e.code !== 'NotFound' && e.code !== 'Forbidden' : true
+        return e.code ? e.code === 'NotFound' || e.code === 'Forbidden' : false
       },
     })
 
