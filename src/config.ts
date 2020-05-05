@@ -19,7 +19,7 @@ export default {
   s3: {
     endPoint: connection.hostname,
     port: connection.port as number | undefined,
-    useSSL: connection.schema === 'https',
+    useSSL: connection.protocol === 'https',
     bucket: process.env.S3_BUCKET as string | undefined,
     region: process.env.S3_REGION as string | undefined,
     accessKey: process.env.S3_ACCESS_KEY as string,
