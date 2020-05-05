@@ -154,6 +154,7 @@ export async function process(opts: ProcessOptions, data: BucketItemStat, stream
     ...ctx,
     contentType,
     size,
+    transformed: true,
     etag: undefined,
     stream: transformedStream,
   }

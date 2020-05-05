@@ -69,5 +69,6 @@ export type ProcessResult = {
   contentType?: string;
   size?: number;
   etag?: string;
+  transformed?: boolean;
   stream: Stream;
 }

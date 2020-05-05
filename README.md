@@ -51,6 +51,7 @@ You can configure the app using either a `.env` file or environment variables. T
 
 #### Image processing config
 - `STORE_IMAGES` - Flag to toggle storing of transformed images to the object storage system. Defaults to `true`
+- `SHOW_TRANSFORMED_HEADER` - Flag to enable showing a custom `X-Pulitzer-Transformed` header when image is transformed by pulitzer. Defaults to `false`
 
 #### Health check config
 - `CIRCUIT_BREAKER_ENABLED` - Enable or disable the circuit breaker. Defaults to `true`

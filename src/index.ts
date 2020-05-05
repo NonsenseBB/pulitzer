@@ -35,7 +35,18 @@ app.use((req, res) => {
     ))
     .then(([data, dataStream]) => process(opts, data, dataStream))
     .then(ctx => {
-      const { data, stream, contentType, etag, size } = ctx
+      const {
+        data,
+        transformed,
+        stream,
+        contentType,
+        etag,
+        size,
+      } = ctx
+
+      if (config.show_transformed_header) {
+        res.setHeader('X-Pulitzer-Transformed', transformed ? 'TRUE' : 'FALSE')
+      }
 
       if (etag) {
         res.setHeader('ETag', etag)

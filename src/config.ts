@@ -15,6 +15,7 @@ const pathSeparator = (process.env.HTTP_PATH_SEPARATOR || DEFAULT_PATH_SEPARATOR
 
 export default {
   store_images: process.env.STORE_IMAGES !== 'false',
+  show_transformed_header: !!process.env.SHOW_TRANSFORMED_HEADER,
   s3: {
     endPoint: connection.hostname,
     port: connection.port as number | undefined,
