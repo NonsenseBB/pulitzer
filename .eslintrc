@@ -1,116 +1,11 @@
 {
-  "parser": "@typescript-eslint/parser",
-  "plugins": [
-    "@typescript-eslint"
-  ],
   "extends": [
-    "eslint:recommended",
-    "plugin:@typescript-eslint/eslint-recommended",
-    "plugin:@typescript-eslint/recommended",
-    "plugin:import/recommended",
-    "plugin:promise/recommended",
-    "plugin:import/errors",
-    "plugin:import/warnings"
+    "@nonsensebb/eslint-config-typescript"
   ],
   "env": {
     "node": true
   },
   "ignorePatterns": [
     "build/"
-  ],
-  "settings": {
-    "import/extensions": [
-      ".js",
-      ".ts"
-    ],
-    "import/resolver": {
-      "node": {
-        "extensions": [
-          ".js",
-          ".ts"
-        ]
-      }
-    }
-  },
-  "rules": {
-    "semi": [
-      "warn",
-      "never"
-    ],
-    "no-plusplus": "off",
-    "object-curly-newline": [
-      "error",
-      {
-        "ObjectExpression": {
-          "minProperties": 6,
-          "multiline": true,
-          "consistent": true
-        },
-        "ObjectPattern": {
-          "minProperties": 6,
-          "multiline": true,
-          "consistent": true
-        },
-        "ImportDeclaration": {
-          "minProperties": 6,
-          "multiline": true,
-          "consistent": true
-        },
-        "ExportDeclaration": {
-          "minProperties": 6,
-          "multiline": true,
-          "consistent": true
-        }
-      }
-    ],
-    "no-use-before-define": [
-      "error",
-      {
-        "functions": false,
-        "classes": false,
-        "variables": true
-      }
-    ],
-    "import/prefer-default-export": "off",
-    "import/no-named-as-default": "off",
-    "no-console": "off",
-    "consistent-return": "off",
-    "no-shadow": "off",
-    "import/order": [
-      "warn",
-      {
-        "newlines-between": "always",
-        "groups": [
-          [
-            "builtin",
-            "external"
-          ],
-          [
-            "parent",
-            "sibling"
-          ],
-          "index"
-        ],
-        "pathGroups": [
-          {
-            "pattern": "**/*.{css|scss|sass}",
-            "group": "index",
-            "position": "after"
-          }
-        ]
-      }
-    ]
-  },
-  "overrides": [
-    {
-      "files": [
-        "src/**/__tests__/**/*.[jt]s?(x)",
-        "src/**/?(*.)+(spec|test).[tj]s?(x)",
-        "tests/**/*.[jt]s?(x)"
-      ],
-      "env": {
-        "jest": true
-      }
-    }
   ]
 }

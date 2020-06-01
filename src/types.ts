@@ -8,7 +8,7 @@ export enum ImageFormat {
   ORIGINAL = 'ORIGINAL',
 }
 
-export function ImageFormatFromString(str): (ImageFormat | undefined) {
+export function ImageFormatFromString(str?: string): (ImageFormat | undefined) {
   if (!str || str.trim() === '') {
     return ImageFormat.ORIGINAL
   }
@@ -34,7 +34,7 @@ export enum FitEnum {
   OUTSIDE = 'outside',
 }
 
-export function FitEnumFromString(str): (FitEnum | undefined) {
+export function FitEnumFromString(str?: string): (FitEnum | undefined) {
   switch (str.trim().toLowerCase()) {
     case 'cover':
       return FitEnum.COVER

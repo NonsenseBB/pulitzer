@@ -1,7 +1,8 @@
 import { Express } from 'express'
 
-import { HealthStatus } from './types'
 import client from '../s3/client'
+
+import { HealthStatus } from './types'
 
 export default function withHealthCheck(app: Express): Express {
   // TODO: improve health check endpoint

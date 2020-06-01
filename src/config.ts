@@ -1,4 +1,4 @@
-/* eslint-disable @typescript-eslint/no-var-requires,@typescript-eslint/camelcase */
+/* eslint-disable @typescript-eslint/no-var-requires */
 require('dotenv').config()
 
 const { ConnectionString } = require('connection-string')

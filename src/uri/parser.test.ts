@@ -1,5 +1,6 @@
-import { parseURI } from './parser'
 import { FitEnum, ImageFormat, ProcessOptions } from '../types'
+
+import { parseURI } from './parser'
 
 describe('parseURI()', () => {
   it('parses a URI without settings correctly', () => {

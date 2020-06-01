@@ -21,7 +21,7 @@ class S3Client {
     this.#client = client
 
     // FIXME: types for dispatch function
-    // eslint-disable-next-line @typescript-eslint/ban-ts-ignore
+    // eslint-disable-next-line @typescript-eslint/ban-ts-comment
     // @ts-ignore
     this.#breaker = new CircuitBreaker(this.#dispatch, {
       ...circuitBreakerOpts,
@@ -82,11 +82,11 @@ class S3Client {
 // TODO: circuit breaker opts
 const client = new S3Client(new Client(config.s3), config.s3.bucket, config.circuitBreaker)
 
-export function statObject(objectName): Promise<BucketItemStat> {
+export function statObject(objectName: string): Promise<BucketItemStat> {
   return client.dispatch(METHOD.statObject, objectName) as Promise<BucketItemStat>
 }
 
-export function getObject(objectName): Promise<Stream> {
+export function getObject(objectName: string): Promise<Stream> {
   return client.dispatch(METHOD.getObject, objectName) as Promise<Stream>
 }
 

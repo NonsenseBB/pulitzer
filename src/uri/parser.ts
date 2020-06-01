@@ -20,7 +20,7 @@ const URI_PARSE_REGEX = new RegExp(
   `(.*)/${config.http.path_separator.replace(/[-/\\^$*+?.()|[\]{}]/g, '\\$&')}/(.*)/_/(.*)`,
 )
 
-export function parseURI(uri): ProcessOptions | undefined {
+export function parseURI(uri: string): ProcessOptions | undefined {
   const pathname = (new URL(uri, 'http://0.0.0.0')).pathname
 
   const objectName = pathname.replace(/^\//, '') // remove leading slash
