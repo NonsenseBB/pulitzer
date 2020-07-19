@@ -1,4 +1,4 @@
-import { Stream } from 'stream'
+import { Readable as ReadableStream } from 'stream'
 import { BucketItemStat, Client, ItemBucketMetadata } from 'minio'
 import CircuitBreaker from 'opossum'
 
@@ -39,17 +39,17 @@ class S3Client {
     return this.#client.statObject(this.#bucketName, objectName)
   }
 
-  #getObject = (objectName): Promise<Stream> => {
+  #getObject = (objectName): Promise<ReadableStream> => {
     return this.#client.getObject(this.#bucketName, objectName)
   }
 
-  #putObject = (objectName: string, stream: Stream, metaData?: ItemBucketMetadata): Promise<string> => {
+  #putObject = (objectName: string, stream: ReadableStream, metaData?: ItemBucketMetadata): Promise<string> => {
     return this.#client.putObject(this.#bucketName, objectName, stream, metaData)
   }
 
   // FIXME: types for dispatch function
   // eslint-disable-next-line @typescript-eslint/explicit-function-return-type
-  #dispatch = (method: METHOD, objectName: string, stream?: Stream, metaData?: ItemBucketMetadata) => {
+  #dispatch = (method: METHOD, objectName: string, stream?: ReadableStream, metaData?: ItemBucketMetadata) => {
     switch (method) {
       case METHOD.statObject:
         return this.#statObject(objectName)
@@ -86,11 +86,11 @@ export function statObject(objectName: string): Promise<BucketItemStat> {
   return client.dispatch(METHOD.statObject, objectName) as Promise<BucketItemStat>
 }
 
-export function getObject(objectName: string): Promise<Stream> {
-  return client.dispatch(METHOD.getObject, objectName) as Promise<Stream>
+export function getObject(objectName: string): Promise<ReadableStream> {
+  return client.dispatch(METHOD.getObject, objectName) as Promise<ReadableStream>
 }
 
-export function putObject(objectName: string, stream: Stream, metaData?: ItemBucketMetadata): Promise<string> {
+export function putObject(objectName: string, stream: ReadableStream, metaData?: ItemBucketMetadata): Promise<string> {
   return client.dispatch(METHOD.putObject, objectName, stream, metaData) as Promise<string>
 }
 
