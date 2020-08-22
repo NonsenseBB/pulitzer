@@ -17,7 +17,7 @@
     "fix:js": "eslint ${ESLINT_OPTS} --fix --ext .js --ext .ts src",
     "lint": "npm run lint:js",
     "lint:js": "eslint ${ESLINT_OPTS} --ext .js --ext .ts src",
-    "validate:types": "npm run build --noEmit"
+    "validate:types": "npm run build -- --noEmit"
   },
   "keywords": [
     "image",
