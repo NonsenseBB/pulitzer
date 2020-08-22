@@ -26,6 +26,8 @@ app.use(
         const originalData = await statObject(opts.original)
         const dataStream = await getObject(opts.original)
 
+        const ctx = await process(opts, originalData, dataStream)
+
         const {
           data,
           transformed,
@@ -33,7 +35,7 @@ app.use(
           contentType,
           etag,
           size,
-        } = await process(opts, originalData, dataStream)
+        } = ctx
 
         if (config.show_transformed_header) {
           res.setHeader('X-Pulitzer-Transformed', transformed ? 'TRUE' : 'FALSE')
