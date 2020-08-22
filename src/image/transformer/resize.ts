@@ -14,27 +14,10 @@ export function applyResizeTransform(transformer: Sharp, opts: ProcessOptions): 
   return transformer
 }
 
-function buildResizeOptions(settings: ProcessSettings): ResizeOptions | undefined {
+const DEFAULT_PREVIEW_SIZE = 42
+
+export function buildResizeOptions(settings: ProcessSettings): ResizeOptions | undefined {
   let resizeOptions: ResizeOptions = undefined
-
-  if (settings.preview) {
-    resizeOptions = {
-      ...resizeOptions,
-      fit: sharp.fit.inside,
-      kernel: sharp.kernel.nearest,
-      withoutEnlargement: true,
-      width: 42,
-      height: 42,
-    }
-  }
-
-  if (settings.maxWidth) {
-    resizeOptions = {
-      ...resizeOptions,
-      withoutEnlargement: true,
-      width: settings.maxWidth,
-    }
-  }
 
   if (settings.width) {
     resizeOptions = {
@@ -47,11 +30,44 @@ function buildResizeOptions(settings: ProcessSettings): ResizeOptions | undefine
     }
   }
 
-  if (settings.maxWidth && settings.width) {
+  if (settings.preview) {
+    let width = DEFAULT_PREVIEW_SIZE
+    let height = DEFAULT_PREVIEW_SIZE
+
+    if (resizeOptions && resizeOptions.width && resizeOptions.width > width) {
+      width = resizeOptions.width
+    }
+
+    if (resizeOptions && (resizeOptions.width && resizeOptions.height)) {
+      height = Math.floor(width * resizeOptions.height / resizeOptions.width)
+    }
+
+    if (resizeOptions && (resizeOptions.width && !resizeOptions.height)) {
+      height = width
+    }
+
     resizeOptions = {
       ...resizeOptions,
+      fit: sharp.fit.inside,
+      kernel: sharp.kernel.nearest,
+      withoutEnlargement: true,
+      width,
+      height,
+    }
+  }
+
+  if (settings.maxWidth) {
+    let height
+
+    if (resizeOptions && (resizeOptions.width && resizeOptions.height)) {
+      height = Math.floor(settings.maxWidth * resizeOptions.height / resizeOptions.width)
+    }
+
+    resizeOptions = {
+      ...resizeOptions,
+      withoutEnlargement: true,
       width: settings.maxWidth,
-      height: Math.floor(settings.maxWidth * settings.height / settings.width),
+      height,
     }
   }
 
