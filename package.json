@@ -11,11 +11,13 @@
     "debug": "nodemon",
     "build": "tsc",
     "clean": "rm -rf build",
+    "validate": "npm run validate:types && npm run lint && npm run test",
     "test": "jest",
     "fix": "npm run fix:js",
     "fix:js": "eslint ${ESLINT_OPTS} --fix --ext .js --ext .ts src",
     "lint": "npm run lint:js",
-    "lint:js": "eslint ${ESLINT_OPTS} --ext .js --ext .ts src"
+    "lint:js": "eslint ${ESLINT_OPTS} --ext .js --ext .ts src",
+    "validate:types": "npm run build -- --noEmit"
   },
   "keywords": [
     "image",
@@ -27,31 +29,31 @@
   "license": "MIT",
   "repository": "git@github.com:d3x7r0/pulitzer.git",
   "dependencies": {
-    "connection-string": "^3.4.2",
+    "connection-string": "^4.2.0",
     "dotenv": "^8.2.0",
     "express": "^4.17.1",
     "minio": "^7.0.16",
-    "opossum": "^5.0.0",
+    "opossum": "^5.0.1",
     "sharp": "^0.25.4"
   },
   "devDependencies": {
     "@nonsensebb/eslint-config-typescript": "^0.2.0",
     "@types/express": "^4.17.7",
-    "@types/jest": "^26.0.9",
+    "@types/jest": "^26.0.10",
     "@types/minio": "^7.0.6",
-    "@types/node": "^14.0.27",
+    "@types/node": "^14.6.0",
     "@types/opossum": "^4.1.1",
     "@types/sharp": "^0.25.1",
-    "@typescript-eslint/eslint-plugin": "^3.8.0",
-    "@typescript-eslint/parser": "^3.8.0",
-    "eslint": "^7.6.0",
+    "@typescript-eslint/eslint-plugin": "^3.9.1",
+    "@typescript-eslint/parser": "^3.9.1",
+    "eslint": "^7.7.0",
     "eslint-plugin-import": "^2.22.0",
     "eslint-plugin-promise": "^4.2.1",
-    "jest": "^26.2.2",
+    "jest": "^26.4.1",
     "nodemon": "^2.0.4",
-    "ts-jest": "^26.1.4",
-    "ts-node": "^8.10.2",
-    "typescript": "^3.9.7"
+    "ts-jest": "^26.2.0",
+    "ts-node": "^9.0.0",
+    "typescript": "^4.0.2"
   },
   "jest": {
     "preset": "ts-jest",
