@@ -11,6 +11,8 @@ RUN npm run build
 
 FROM node:lts-alpine
 
+RUN apk add --no-cache tini
+
 WORKDIR /app
 
 COPY package*.json ./
@@ -21,4 +23,7 @@ COPY --from=builder /usr/src/app/build ./build
 ENV NODE_ENV=production
 ENV HTTP_PORT 80
 EXPOSE 80
+
+ENTRYPOINT ["/sbin/tini", "--"]
+
 CMD ["node", "./build/index.js"]
