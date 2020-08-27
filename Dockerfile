@@ -12,11 +12,11 @@ FROM node:lts-alpine
 WORKDIR /app
 
 COPY package*.json ./
-RUN npm ci --quiet --only=production
+RUN npm ci --quiet --only=production && npm cache clean --force
 
 COPY --from=builder /usr/src/app/build ./build
 
 ENV NODE_ENV=production
 ENV HTTP_PORT 80
 EXPOSE 80
-CMD ["npm", "start"]
+CMD ["node", "./build/index.js"]
