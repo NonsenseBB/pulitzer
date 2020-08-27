@@ -3,9 +3,11 @@ FROM node:lts-alpine AS builder
 WORKDIR /usr/src/app
 
 COPY package*.json ./
+RUN npm ci --quiet
+
 COPY tsconfig.json ./
 COPY src ./src
-RUN npm ci --quiet && npm run build
+RUN npm run build
 
 FROM node:lts-alpine
 
