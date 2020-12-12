@@ -20,15 +20,15 @@ const URI_PARSE_REGEX = new RegExp(
   `(.*)/${config.http.path_separator.replace(/[-/\\^$*+?.()|[\]{}]/g, '\\$&')}/(.*)/_/(.*)`,
 )
 
-export function parseURI(uri: string): ProcessOptions | undefined {
-  const pathname = (new URL(uri, 'http://0.0.0.0')).pathname
+export function parseURI(hostname: string, uri: string): ProcessOptions | undefined {
+  const parsedUri = (new URL(uri, `http://${hostname}`))
 
-  const objectName = pathname.replace(/^\//, '') // remove leading slash
-
-  const parts = pathname.match(URI_PARSE_REGEX)
+  const objectName = parsedUri.pathname.replace(/^\//, '') // remove leading slash
+  const parts = parsedUri.pathname.match(URI_PARSE_REGEX)
 
   const result: ProcessOptions = {
-    transformed: pathname.replace(/^\//, ''), // remove leading slash
+    bucket: parsedUri.hostname.toLowerCase(),
+    transformed: parsedUri.pathname.replace(/^\//, ''), // remove leading slash
     original: objectName,
     settings: {
       format: ImageFormat.ORIGINAL,

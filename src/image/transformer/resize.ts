@@ -7,7 +7,11 @@ export function applyResizeTransform(transformer: Sharp, opts: ProcessOptions): 
   const resizeOptions = buildResizeOptions(settings)
 
   if (resizeOptions) {
-    console.debug('Will resize', { objectName: opts.transformed, options: resizeOptions })
+    console.debug('Will resize', {
+      bucket: opts.bucket,
+      objectName: opts.transformed,
+      options: resizeOptions
+    })
     return transformer.resize(resizeOptions)
   }
 

@@ -19,7 +19,11 @@ export async function process(opts: ProcessOptions, data: BucketItemStat, stream
   if (!isSupportedImageType(ctx)) {
     console.debug(
       'requested file is not a supported image type, do nothing',
-      { objectName: opts.transformed, contentType: ctx.contentType },
+      {
+        bucket: opts.bucket,
+        objectName: opts.transformed,
+        contentType: ctx.contentType,
+      },
     )
 
     return ctx
@@ -28,7 +32,11 @@ export async function process(opts: ProcessOptions, data: BucketItemStat, stream
   if (!needsTransform(opts)) {
     console.debug(
       'no transformations required, do nothing',
-      { objectName: opts.transformed, contentType: ctx.contentType },
+      {
+        bucket: opts.bucket,
+        objectName: opts.transformed,
+        contentType: ctx.contentType,
+      },
     )
 
     return ctx
@@ -44,7 +52,7 @@ export async function process(opts: ProcessOptions, data: BucketItemStat, stream
 
   const transformedStream = stream.pipe(transformer)
 
-  storeCachedVersion(opts.transformed, transformedStream, contentType)
+  storeCachedVersion(opts, transformedStream, contentType)
 
   let size: number = undefined
   transformer.on('info', info => size = info.size)

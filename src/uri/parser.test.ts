@@ -3,10 +3,26 @@ import { FitEnum, ImageFormat, ProcessOptions } from '../types'
 import { parseURI } from './parser'
 
 describe('parseURI()', () => {
-  it('parses a URI without settings correctly', () => {
-    const result = parseURI('/uploads/2020/02/picture.jpg')
+  it('parses a hostname to be lowercased', () => {
+    const result = parseURI('EXAMPLE.com', '/uploads/2020/02/picture.jpg')
 
     expect(result).toEqual({
+      bucket: 'example.com',
+      transformed: 'uploads/2020/02/picture.jpg',
+      original: 'uploads/2020/02/picture.jpg',
+      settings: {
+        format: ImageFormat.ORIGINAL,
+        fit: FitEnum.COVER,
+        preview: false,
+      },
+    } as ProcessOptions)
+  })
+
+  it('parses a URI without settings correctly', () => {
+    const result = parseURI('example.com', '/uploads/2020/02/picture.jpg')
+
+    expect(result).toEqual({
+      bucket: 'example.com',
       transformed: 'uploads/2020/02/picture.jpg',
       original: 'uploads/2020/02/picture.jpg',
       settings: {
@@ -18,9 +34,10 @@ describe('parseURI()', () => {
   })
 
   it('parses URIs with settings at the start correctly', () => {
-    const result = parseURI('/__processed/mw-670/ff-webp/contain/4x3/_/uploads/2020/02/picture.jpg')
+    const result = parseURI('example.com', '/__processed/mw-670/ff-webp/contain/4x3/_/uploads/2020/02/picture.jpg')
 
     expect(result).toEqual({
+      bucket: 'example.com',
       transformed: '__processed/mw-670/ff-webp/contain/4x3/_/uploads/2020/02/picture.jpg',
       original: 'uploads/2020/02/picture.jpg',
       settings: {
@@ -35,9 +52,10 @@ describe('parseURI()', () => {
   })
 
   it('parses URIs with settings in the middle correctly', () => {
-    const result = parseURI('/uploads/2020/02/__processed/preview/ff-webp/fill/1024x768/_/picture.jpg')
+    const result = parseURI('example.com', '/uploads/2020/02/__processed/preview/ff-webp/fill/1024x768/_/picture.jpg')
 
     expect(result).toEqual({
+      bucket: 'example.com',
       transformed: 'uploads/2020/02/__processed/preview/ff-webp/fill/1024x768/_/picture.jpg',
       original: 'uploads/2020/02/picture.jpg',
       settings: {
@@ -51,9 +69,10 @@ describe('parseURI()', () => {
   })
 
   it('ignores unknown setting', () => {
-    const result = parseURI('/uploads/2020/02/__processed/foo/ff-webp/fill/1024x768/_/picture.jpg')
+    const result = parseURI('example.com', '/uploads/2020/02/__processed/foo/ff-webp/fill/1024x768/_/picture.jpg')
 
     expect(result).toEqual({
+      bucket: 'example.com',
       transformed: 'uploads/2020/02/__processed/foo/ff-webp/fill/1024x768/_/picture.jpg',
       original: 'uploads/2020/02/picture.jpg',
       settings: {
@@ -67,9 +86,10 @@ describe('parseURI()', () => {
   })
 
   it('ignores double slashes in settings', () => {
-    const result = parseURI('/uploads/2020/02/__processed//ff-webp/fill/1024x768/_/picture.jpg')
+    const result = parseURI('example.com', '/uploads/2020/02/__processed//ff-webp/fill/1024x768/_/picture.jpg')
 
     expect(result).toEqual({
+      bucket: 'example.com',
       transformed: 'uploads/2020/02/__processed//ff-webp/fill/1024x768/_/picture.jpg',
       original: 'uploads/2020/02/picture.jpg',
       settings: {
@@ -83,9 +103,10 @@ describe('parseURI()', () => {
   })
 
   it('falls back to full path when no setting is valid', () => {
-    const result = parseURI('/uploads/2020/02/__processed/foo/bar/_/picture.jpg')
+    const result = parseURI('example.com', '/uploads/2020/02/__processed/foo/bar/_/picture.jpg')
 
     expect(result).toEqual({
+      bucket: 'example.com',
       transformed: 'uploads/2020/02/__processed/foo/bar/_/picture.jpg',
       original: 'uploads/2020/02/__processed/foo/bar/_/picture.jpg',
       settings: {

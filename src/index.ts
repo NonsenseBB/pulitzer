@@ -1,73 +1,23 @@
 import express from 'express'
 
 import config from './config'
-import { parseURI } from './uri/parser'
-import { getObject, statObject } from './s3/client'
-import { process } from './image'
-import { asAsyncRoute, withMethodFilter } from './utils/routes'
-import { errorHandler, throwNotFoundError } from './utils/errors'
+import { errorHandler } from './utils/errors'
 import withHealthCheck from './health'
+import withTransformRoute from './transform'
 
-const app = withHealthCheck(express())
+if (!config.s3.bucket && config.s3.allowedBuckets.length === 0) {
+  throw new Error('Missing S3_BUCKET or S3_ALLOWED_BUCKETS environment variable')
+}
 
-app.disable('x-powered-by')
+console.debug('Allowed buckets', config.s3.allowedBuckets)
 
-// uri format: <object_path>/__processed/ff-<png|webp|jpeg>/mw-<max_width>/<w>x<h>/_/<filename>
-app.use(
-  withMethodFilter(
-    asAsyncRoute(
-      async (req, res) => {
-        const opts = parseURI(req.url)
-
-        if (!opts) {
-          throwNotFoundError()
-        }
-
-        const originalData = await statObject(opts.original)
-        const dataStream = await getObject(opts.original)
-
-        const ctx = await process(opts, originalData, dataStream)
-
-        const {
-          data,
-          transformed,
-          stream,
-          contentType,
-          etag,
-          size,
-        } = ctx
-
-        if (config.show_transformed_header) {
-          res.setHeader('X-Pulitzer-Transformed', transformed ? 'TRUE' : 'FALSE')
-        }
-
-        if (etag) {
-          res.setHeader('ETag', etag)
-        }
-
-        if (size) {
-          res.setHeader('Content-Length', size.toString())
-        }
-
-        if (contentType) {
-          res.setHeader('Content-Type', contentType)
-        }
-
-        res.setHeader('Cache-Control', `public, max-age=${config.http.max_age}`)
-        res.setHeader('Last-Modified', data.lastModified.toISOString())
-
-        Object.entries(data.metaData)
-          .filter(item => item[0] !== 'content-type')
-          .forEach((entry) => {
-            res.setHeader(entry[0], entry[1])
-          })
-
-        stream.pipe(res)
-      },
-    ),
-    ['GET', 'HEAD'],
+const app = withTransformRoute(
+  withHealthCheck(
+    express(),
   ),
 )
+
+app.disable('x-powered-by')
 
 // Error handler
 app.use(errorHandler)

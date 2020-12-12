@@ -8,10 +8,11 @@ export function applyFormatTransform(transformer: Sharp, opts: ProcessOptions): 
   const { format, formatOptions } = buildFormatOptions(settings)
 
   if (format) {
-    console.debug(
-      'Will convert image format',
-      { objectName: opts.transformed, format: settings.format },
-    )
+    console.debug('Will convert image format', {
+      bucket: opts.bucket,
+      objectName: opts.transformed,
+      format: settings.format,
+    })
 
     return transformer.toFormat(
       format.toString().toLowerCase(),

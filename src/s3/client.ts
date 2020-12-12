@@ -3,15 +3,16 @@ import { BucketItemStat, Client, ItemBucketMetadata } from 'minio'
 import CircuitBreaker from 'opossum'
 
 import { HealthStatus } from '../health/types'
-import config from '../config'
 
-export enum METHOD {
+import { IS3Client } from './types'
+
+enum METHOD {
   statObject,
   getObject,
   putObject,
 }
 
-class S3Client {
+export default class S3Client implements IS3Client {
   readonly #client: Client
   readonly #breaker: CircuitBreaker
   readonly #bucketName: string
@@ -30,16 +31,27 @@ class S3Client {
       },
     })
 
-    this.#breaker.on('close', () => console.info('Circuit breaker closed'))
-    this.#breaker.on('halfOpen', () => console.error('Circuit breaker half open, next request will re-evaluate status'))
-    this.#breaker.on('open', () => console.error('Circuit breaker opened'))
+    this.#breaker.on(
+      'close',
+      () => console.info('Circuit breaker closed', { bucket: this.#bucketName }),
+    )
+
+    this.#breaker.on(
+      'halfOpen',
+      () => console.error('Circuit breaker half open, next request will re-evaluate status', { bucket: this.#bucketName }),
+    )
+
+    this.#breaker.on(
+      'open',
+      () => console.error('Circuit breaker opened', { bucket: this.#bucketName }),
+    )
   }
 
-  #statObject = (objectName): Promise<BucketItemStat> => {
+  #statObject = (objectName: string): Promise<BucketItemStat> => {
     return this.#client.statObject(this.#bucketName, objectName)
   }
 
-  #getObject = (objectName): Promise<ReadableStream> => {
+  #getObject = (objectName: string): Promise<ReadableStream> => {
     return this.#client.getObject(this.#bucketName, objectName)
   }
 
@@ -47,9 +59,7 @@ class S3Client {
     return this.#client.putObject(this.#bucketName, objectName, stream, metaData)
   }
 
-  // FIXME: types for dispatch function
-  // eslint-disable-next-line @typescript-eslint/explicit-function-return-type
-  #dispatch = (method: METHOD, objectName: string, stream?: ReadableStream, metaData?: ItemBucketMetadata) => {
+  #dispatch = (method: METHOD, objectName: string, stream?: ReadableStream, metaData?: ItemBucketMetadata): unknown => {
     switch (method) {
       case METHOD.statObject:
         return this.#statObject(objectName)
@@ -60,9 +70,7 @@ class S3Client {
     }
   }
 
-  // FIXME: types for dispatch function
-  // eslint-disable-next-line @typescript-eslint/explicit-function-return-type
-  dispatch = (...params) => {
+  dispatch = (...params: unknown[]): unknown => {
     return this.#breaker.fire(...params)
   }
 
@@ -77,21 +85,16 @@ class S3Client {
 
     return HealthStatus.OK
   }
+
+  statObject(objectName: string): Promise<BucketItemStat> {
+    return this.dispatch(METHOD.statObject, objectName) as Promise<BucketItemStat>
+  }
+
+  getObject(objectName: string): Promise<ReadableStream> {
+    return this.dispatch(METHOD.getObject, objectName) as Promise<ReadableStream>
+  }
+
+  putObject(objectName: string, stream: ReadableStream, metaData?: ItemBucketMetadata): Promise<string> {
+    return this.dispatch(METHOD.putObject, objectName, stream, metaData) as Promise<string>
+  }
 }
-
-// TODO: circuit breaker opts
-const client = new S3Client(new Client(config.s3), config.s3.bucket, config.circuitBreaker)
-
-export function statObject(objectName: string): Promise<BucketItemStat> {
-  return client.dispatch(METHOD.statObject, objectName) as Promise<BucketItemStat>
-}
-
-export function getObject(objectName: string): Promise<ReadableStream> {
-  return client.dispatch(METHOD.getObject, objectName) as Promise<ReadableStream>
-}
-
-export function putObject(objectName: string, stream: ReadableStream, metaData?: ItemBucketMetadata): Promise<string> {
-  return client.dispatch(METHOD.putObject, objectName, stream, metaData) as Promise<string>
-}
-
-export default client

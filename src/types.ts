@@ -59,6 +59,7 @@ export type ProcessSettings = {
 }
 
 export type ProcessOptions = {
+  bucket: string;
   transformed?: string;
   original: string;
   settings: ProcessSettings;

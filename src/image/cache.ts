@@ -1,18 +1,20 @@
 import { Readable } from 'stream'
 
-import { getObject, putObject, statObject } from '../s3/client'
+import { getClient } from '../s3'
 import { ProcessOptions, ProcessResult } from '../types'
 import config from '../config'
 
 export async function getCachedVersion(opts: ProcessOptions, ctx: ProcessResult): Promise<ProcessResult> {
   try {
-    const data = await statObject(opts.transformed)
-    const stream = await getObject(opts.transformed)
+    const s3 = getClient(opts.bucket)
 
-    console.debug(
-      'Cached version of the transformed file found, serving directly from storage',
-      { objectName: opts.transformed },
-    )
+    const data = await s3.statObject(opts.transformed)
+    const stream = await s3.getObject(opts.transformed)
+
+    console.debug('Cached version of the transformed file found, serving directly from storage', {
+      bucket: opts.bucket,
+      objectName: opts.transformed,
+    })
 
     return {
       ...ctx,
@@ -27,14 +29,34 @@ export async function getCachedVersion(opts: ProcessOptions, ctx: ProcessResult)
   }
 }
 
-export function storeCachedVersion(objectName: string, stream: Readable, contentType: string): void {
+export function storeCachedVersion(
+  opts: ProcessOptions,
+  stream: Readable,
+  contentType: string,
+): void {
   if (!config.store_images) {
     return
   }
 
-  console.debug('Will store file to object storage', { objectName, contentType })
+  const objectName = opts.transformed
 
-  putObject(objectName, stream, { 'content-type': contentType })
-    .then(() => console.debug('File stored to object storage', { objectName, contentType }))
-    .catch(err => console.warn(`Unable to save file ${objectName}`, err))
+  console.debug('Will store file to object storage', {
+    bucket: opts.bucket,
+    objectName: opts.transformed,
+    contentType,
+  })
+
+  getClient(opts.bucket)
+    .putObject(objectName, stream, { 'content-type': contentType })
+    .then(() => console.debug('File stored to object storage', {
+      bucket: opts.bucket,
+      objectName: opts.transformed,
+      contentType,
+    }))
+    .catch(err => console.warn(`Unable to save file`, {
+      bucket: opts.bucket,
+      objectName: opts.transformed,
+      contentType,
+      err,
+    }))
 }

@@ -13,6 +13,26 @@ const connection = new ConnectionString(process.env.S3_ENDPOINT || DEFAULT_S3_EN
 const pathSeparator = (process.env.HTTP_PATH_SEPARATOR || DEFAULT_PATH_SEPARATOR)
   .replace(/\/$/g, ' ') // remove trailing slash
 
+const S3_BUCKET = process.env.S3_BUCKET as string | undefined
+const ALLOWED_BUCKETS = (process.env.S3_ALLOWED_BUCKETS as string | undefined) || ''
+
+const allowedBuckets = ALLOWED_BUCKETS.split(',')
+  .concat(S3_BUCKET)
+  .filter(item => !!item)
+  .filter((item, idx, arr) => arr.indexOf(item) === idx)
+  .map(item => item.toLowerCase())
+
+export type S3Config = {
+  endPoint: string
+  port?: number | undefined
+  useSSL: boolean
+  allowedBuckets: string[]
+  bucket?: string | undefined
+  region?: string | undefined
+  accessKey: string
+  secretKey: string
+}
+
 export default {
   store_images: process.env.STORE_IMAGES !== 'false',
   show_transformed_header: !!process.env.SHOW_TRANSFORMED_HEADER,
@@ -20,11 +40,12 @@ export default {
     endPoint: connection.hostname,
     port: connection.port as number | undefined,
     useSSL: connection.protocol === 'https',
-    bucket: process.env.S3_BUCKET as string | undefined,
+    allowedBuckets,
+    bucket: S3_BUCKET,
     region: process.env.S3_REGION as string | undefined,
     accessKey: process.env.S3_ACCESS_KEY as string,
     secretKey: process.env.S3_SECRET_KEY as string,
-  },
+  } as S3Config,
   circuitBreaker: {
     enabled: process.env.CIRCUIT_BREAKER_ENABLED !== 'false',
     timeout: process.env.CIRCUIT_BREAKER_TIMEOUT as unknown as number,
