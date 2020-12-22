@@ -2,6 +2,7 @@
 Image resizing and format converting proxy
 
 **Github:** https://github.com/d3x7r0/pulitzer
+**Docker Hub:** https://hub.docker.com/r/nonsensebb/pulitzer
 
 [![CI](https://github.com/d3x7r0/pulitzer/workflows/CI/badge.svg?branch=master)](https://github.com/d3x7r0/pulitzer)
 
