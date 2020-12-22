@@ -3,7 +3,7 @@ import { FitEnum, ImageFormat, ProcessOptions } from '../types'
 import { parseURI } from './parser'
 
 describe('parseURI()', () => {
-  it('parses a hostname to be lowercased', () => {
+  it('parses a hostname to be lowercase', () => {
     const result = parseURI('EXAMPLE.com', '/uploads/2020/02/picture.jpg')
 
     expect(result).toEqual({
@@ -60,6 +60,91 @@ describe('parseURI()', () => {
       original: 'uploads/2020/02/picture.jpg',
       settings: {
         format: ImageFormat.WEBP,
+        fit: FitEnum.FILL,
+        width: 1024,
+        height: 768,
+        preview: true,
+      },
+    } as ProcessOptions)
+  })
+
+  it('parses URIs with WebP format correctly', () => {
+    const result = parseURI('example.com', '/uploads/2020/02/__processed/preview/ff-webp/fill/1024x768/_/picture.jpg')
+
+    expect(result).toEqual({
+      bucket: 'example.com',
+      transformed: 'uploads/2020/02/__processed/preview/ff-webp/fill/1024x768/_/picture.jpg',
+      original: 'uploads/2020/02/picture.jpg',
+      settings: {
+        format: ImageFormat.WEBP,
+        fit: FitEnum.FILL,
+        width: 1024,
+        height: 768,
+        preview: true,
+      },
+    } as ProcessOptions)
+  })
+
+  it('parses URIs with JPG format correctly', () => {
+    const result = parseURI('example.com', '/uploads/2020/02/__processed/preview/ff-jpg/fill/1024x768/_/picture.jpg')
+
+    expect(result).toEqual({
+      bucket: 'example.com',
+      transformed: 'uploads/2020/02/__processed/preview/ff-jpg/fill/1024x768/_/picture.jpg',
+      original: 'uploads/2020/02/picture.jpg',
+      settings: {
+        format: ImageFormat.JPEG,
+        fit: FitEnum.FILL,
+        width: 1024,
+        height: 768,
+        preview: true,
+      },
+    } as ProcessOptions)
+  })
+
+  it('parses URIs with JPEG format correctly', () => {
+    const result = parseURI('example.com', '/uploads/2020/02/__processed/preview/ff-jpeg/fill/1024x768/_/picture.jpeg')
+
+    expect(result).toEqual({
+      bucket: 'example.com',
+      transformed: 'uploads/2020/02/__processed/preview/ff-jpeg/fill/1024x768/_/picture.jpeg',
+      original: 'uploads/2020/02/picture.jpeg',
+      settings: {
+        format: ImageFormat.JPEG,
+        fit: FitEnum.FILL,
+        width: 1024,
+        height: 768,
+        preview: true,
+      },
+    } as ProcessOptions)
+  })
+
+  it('parses URIs with PNG format correctly', () => {
+    const result = parseURI('example.com', '/uploads/2020/02/__processed/preview/ff-png/fill/1024x768/_/picture.png')
+
+    expect(result).toEqual({
+      bucket: 'example.com',
+      transformed: 'uploads/2020/02/__processed/preview/ff-png/fill/1024x768/_/picture.png',
+      original: 'uploads/2020/02/picture.png',
+      settings: {
+        format: ImageFormat.PNG,
+        fit: FitEnum.FILL,
+        width: 1024,
+        height: 768,
+        preview: true,
+      },
+    } as ProcessOptions)
+  })
+
+  it('parses URIs with AVIF format correctly', () => {
+    const result = parseURI('example.com', '/uploads/2020/02/__processed/preview/ff-avif/fill/1024x768/_/picture.avif')
+
+    expect(result).toEqual({
+      bucket: 'example.com',
+      transformed: 'uploads/2020/02/__processed/preview/ff-avif/fill/1024x768/_/picture.avif',
+      original: 'uploads/2020/02/picture.avif',
+      settings: {
+        format: ImageFormat.AVIF,
         fit: FitEnum.FILL,
         width: 1024,
         height: 768,
