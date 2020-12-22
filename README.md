@@ -38,7 +38,7 @@ Will proxy to:
 
 - `mw-<width>` - max width of `<width>` pixels
 - `<width>x<height>` - resizes the image to a given `<width>` and `<height>`. If max width is enabled works as a ratio instead
-- `ff-<format>` - converts the result to one of JPEG, PNG or WEBP
+- `ff-<format>` - converts the result to one of JPEG, PNG, WEBP or (optionally) AVIF
 - `preview` - will blur and scale the image to provide a placeholder image (42x42px jpeg by default)
 - `<fit>` - Allows the control of the "fit" of the image when resizing. Allowed values are `cover|contain|fill|inside|outside`. [For more info check Sharp's documentation](https://sharp.pixelplumbing.com/api-resize)
 
@@ -73,3 +73,6 @@ You can configure the app using either a `.env` file or environment variables. T
 - `CIRCUIT_BREAKER_TIMEOUT` - The time in milliseconds that action should be allowed to execute before timing out. Timeout can be disabled by setting this to false. Defaults 10000 (10 seconds)
 - `CIRCUIT_BREAKER_RESET_TIMEOUT` - The time in milliseconds to wait before setting the breaker to halfOpen state, and trying the action again. Defaults to 30000 (30 seconds)
 - `CIRCUIT_BREAKER_ERROR_PERCENTAGE_THRESHOLD` - The error percentage at which to open the circuit and start short-circuiting requests to fallback. Defaults to 50 (50%)
+
+#### AVIF support
+- `ENABLE_AVIF_SUPPORT` - Enable AVIF support. This is currently experimental.

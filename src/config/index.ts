@@ -1,6 +1,8 @@
 /* eslint-disable @typescript-eslint/no-var-requires */
 require('dotenv').config()
 
+import { Config } from './types'
+
 const { ConnectionString } = require('connection-string')
 
 const DEFAULT_HTTP_PORT = 8080
@@ -22,20 +24,10 @@ const allowedBuckets = ALLOWED_BUCKETS.split(',')
   .filter((item, idx, arr) => arr.indexOf(item) === idx)
   .map(item => item.toLowerCase())
 
-export type S3Config = {
-  endPoint: string
-  port?: number | undefined
-  useSSL: boolean
-  allowedBuckets: string[]
-  bucket?: string | undefined
-  region?: string | undefined
-  accessKey: string
-  secretKey: string
-}
-
 export default {
   store_images: process.env.STORE_IMAGES !== 'false',
   show_transformed_header: !!process.env.SHOW_TRANSFORMED_HEADER,
+  enable_avif_support: process.env.ENABLE_AVIF_SUPPORT === 'true',
   s3: {
     endPoint: connection.hostname,
     port: connection.port as number | undefined,
@@ -45,7 +37,7 @@ export default {
     region: process.env.S3_REGION as string | undefined,
     accessKey: process.env.S3_ACCESS_KEY as string,
     secretKey: process.env.S3_SECRET_KEY as string,
-  } as S3Config,
+  },
   circuitBreaker: {
     enabled: process.env.CIRCUIT_BREAKER_ENABLED !== 'false',
     timeout: process.env.CIRCUIT_BREAKER_TIMEOUT as unknown as number,
@@ -57,4 +49,4 @@ export default {
     max_age: (process.env.HTTP_MAX_AGE || DEFAULT_HTTP_MAX_AGE) as number,
     path_separator: pathSeparator as string,
   },
-}
+} as Config

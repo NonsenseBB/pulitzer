@@ -1,26 +1,44 @@
-import { S3Config } from '../config'
-import { ProcessOptions } from '../types'
+import { ImageFormat, ProcessOptions } from '../types'
+import { Config, S3Config } from '../config/types'
 
 import { validateBucket } from './validation'
 
-const DUMMY_CONFIG: S3Config = {
+const DUMMY_S3_CONFIG: S3Config = {
   accessKey: 'xxx',
   secretKey: 'xxx',
   endPoint: 's3.amazonaws.com',
   useSSL: true,
-  allowedBuckets: [],
+  allowedBuckets: ['example.com'],
+}
+
+const DUMMY_CONFIG: Config = {
+  circuitBreaker: undefined,
+  enable_avif_support: false,
+  http: undefined,
+  s3: DUMMY_S3_CONFIG,
+  show_transformed_header: false,
+  store_images: false,
+}
+
+const DUMMY_SETTINGS = {
+  format: ImageFormat.ORIGINAL,
+  fit: undefined,
+  preview: false,
 }
 
 const DUMMY_OPTS: ProcessOptions = {
   bucket: 'example.com',
   original: 'my-file.png',
-  settings: null,
+  settings: DUMMY_SETTINGS,
 }
 
 describe('validateBucket()', () => {
   it('Forces bucket from settings if a different one is set', () => {
     const result = validateBucket(
-      { ...DUMMY_CONFIG, bucket: 'my-bucket.example.com' },
+      {
+        ...DUMMY_CONFIG,
+        s3: { ...DUMMY_S3_CONFIG, bucket: 'my-bucket.example.com', allowedBuckets: [] },
+      },
       { ...DUMMY_OPTS },
     )
 
@@ -32,7 +50,7 @@ describe('validateBucket()', () => {
 
   it('Returns empty if bucket is not in allowed list', () => {
     const result = validateBucket(
-      { ...DUMMY_CONFIG, allowedBuckets: ['my-bucket.example.com'] },
+      { ...DUMMY_CONFIG, s3: { ...DUMMY_S3_CONFIG, allowedBuckets: ['my-bucket.example.com'] } },
       { ...DUMMY_OPTS, bucket: 'example.com' },
     )
 
@@ -41,13 +59,34 @@ describe('validateBucket()', () => {
 
   it('Returns config if bucket is in allowed list', () => {
     const result = validateBucket(
-      { ...DUMMY_CONFIG, allowedBuckets: ['my-bucket.example.com'] },
+      { ...DUMMY_CONFIG, s3: { ...DUMMY_S3_CONFIG, allowedBuckets: ['my-bucket.example.com'] } },
       { ...DUMMY_OPTS, bucket: 'my-bucket.example.com' },
     )
 
     expect(result).toEqual({
       ...DUMMY_OPTS,
       bucket: 'my-bucket.example.com',
+    } as ProcessOptions)
+  })
+
+  it('Returns empty if AVIF is not enabled and AVIF is requested', () => {
+    const result = validateBucket(
+      { ...DUMMY_CONFIG, enable_avif_support: false },
+      { ...DUMMY_OPTS, settings: { ...DUMMY_SETTINGS, format: ImageFormat.AVIF } },
+    )
+
+    expect(result).toBeUndefined()
+  })
+
+  it('Returns config if AVIF is enabled and AVIF is requested', () => {
+    const result = validateBucket(
+      { ...DUMMY_CONFIG, enable_avif_support: true },
+      { ...DUMMY_OPTS, settings: { ...DUMMY_SETTINGS, format: ImageFormat.AVIF } },
+    )
+
+    expect(result).toEqual({
+      ...DUMMY_OPTS,
+      settings: { ...DUMMY_SETTINGS, format: ImageFormat.AVIF },
     } as ProcessOptions)
   })
 })

@@ -11,7 +11,7 @@ import {
 } from '../types'
 
 const MAX_WIDTH_REGEX = /mw-(\d+)/i
-const FORMAT_REGEX = /ff-(png|webp|jpeg|jpg)/i
+const FORMAT_REGEX = /ff-(png|webp|jpeg|jpg|avif)/i
 const SIZE_REGEX = /(\d+)x(\d+)/i
 const FIT_REGEX = /(cover|contain|fill|inside|outside)/i
 const PREVIEW_PARAM = 'preview'

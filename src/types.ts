@@ -5,6 +5,7 @@ export enum ImageFormat {
   PNG = 'PNG',
   WEBP = 'WEBP',
   JPEG = 'JPEG',
+  AVIF = 'AVIF',
   ORIGINAL = 'ORIGINAL',
 }
 
@@ -14,6 +15,8 @@ export function ImageFormatFromString(str?: string): (ImageFormat | undefined) {
   }
 
   switch (str.trim().toUpperCase()) {
+    case 'AVIF':
+      return ImageFormat.AVIF
     case 'PNG':
       return ImageFormat.PNG
     case 'WEBP':

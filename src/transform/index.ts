@@ -15,7 +15,7 @@ export default function withTransformRoute(app: Express): Express {
       asAsyncRoute(
         async (req, res) => {
           const opts = validateBucket(
-            config.s3,
+            config,
             parseURI(req.hostname, req.url),
           )
 
