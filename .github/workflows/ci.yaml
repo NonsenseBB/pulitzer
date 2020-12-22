@@ -10,8 +10,8 @@ on:
     types: [opened, synchronize, reopened, ready_for_review]
 
 jobs:
-  ci:
-    name: CI
+  tests:
+    name: Tests
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v2
@@ -48,7 +48,7 @@ jobs:
           CI: true
 
   push_to_docker_hub:
-    needs: ci
+    needs: tests
     if: github.ref == 'refs/heads/master'
     name: Push Docker image to Docker Hub
     runs-on: ubuntu-latest
