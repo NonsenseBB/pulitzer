@@ -1,4 +1,4 @@
-import { JpegOptions, Sharp } from 'sharp'
+import { FormatEnum, JpegOptions, Sharp } from 'sharp'
 
 import { ImageFormat, ProcessOptions, ProcessSettings } from '../../types'
 
@@ -15,7 +15,7 @@ export function applyFormatTransform(transformer: Sharp, opts: ProcessOptions): 
     })
 
     return transformer.toFormat(
-      format.toString().toLowerCase(),
+      format,
       formatOptions,
     )
   }
@@ -24,7 +24,7 @@ export function applyFormatTransform(transformer: Sharp, opts: ProcessOptions): 
 }
 
 type FormatOptionsResult = {
-  format: string
+  format?: keyof FormatEnum
   formatOptions?: JpegOptions
 }
 
@@ -41,5 +41,8 @@ export function buildFormatOptions(settings: ProcessSettings): FormatOptionsResu
     formatOptions = { quality: 40 }
   }
 
-  return { format, formatOptions }
+  return {
+    format: <keyof FormatEnum> format?.toString().toLowerCase(),
+    formatOptions
+  }
 }

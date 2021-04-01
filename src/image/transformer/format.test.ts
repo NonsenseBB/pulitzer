@@ -11,7 +11,7 @@ describe('image/transformer/format', () => {
       )
 
       expect(result).toEqual({
-        format: 'JPEG',
+        format: 'jpeg',
         formatOptions: { quality: 40 },
       })
     })
@@ -25,7 +25,7 @@ describe('image/transformer/format', () => {
         )
 
         expect(result).toEqual({
-          format: isOriginal ? undefined : format.toString(),
+          format: isOriginal ? undefined : format.toString().toLowerCase(),
           formatOptions: undefined,
         })
       })
@@ -36,7 +36,7 @@ describe('image/transformer/format', () => {
         )
 
         expect(result).toEqual({
-          format: isOriginal ? 'JPEG' : format.toString(),
+          format: isOriginal ? 'jpeg' : format.toString().toLowerCase(),
           formatOptions: isOriginal ? { quality: 40 } : undefined,
         })
       })
