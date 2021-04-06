@@ -27,7 +27,7 @@
   ],
   "author": "Luis Nabais <luis@nabais.me>",
   "license": "MIT",
-  "repository": "git@github.com:NonsenseBB/pulitzer.git",
+  "repository": "git@github.com:nonsensebb/pulitzer.git",
   "dependencies": {
     "connection-string": "^4.3.2",
     "dotenv": "^8.2.0",
