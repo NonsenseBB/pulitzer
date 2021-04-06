@@ -26,6 +26,6 @@ There are 3 pieces of the puzzle here:
 1. [Minio](https://github.com/minio/minio) is used as an S3 compatible object storage backend.
    You could just as easily have used Amazon S3 or any of the many compatible providers. Minio is used for simplicity.
 
-2. [Nginx](https://nginx.org/en/) is used as a web server to completely bypass minio in the cases where the processed version is already in storage. This is done by mounting the same storage in both the nginx and minio containers (minio does not support static file serving like S3 does)
+2. [Nginx](https://nginx.org/en/) is used as a web server to completely bypass Pulitzer in the cases where the processed version is already in storage. This is done by mounting the same storage in both the nginx and minio containers (minio does not support static file serving like S3 does)
 
 3. Pulitzer itself gets requests reverse proxied from nginx when the processed files are missing on the object storage bucket, processes them, stores them and returns them.
