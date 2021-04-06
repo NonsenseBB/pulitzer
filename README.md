@@ -46,14 +46,14 @@ Will proxy to:
 The application also exposes an `/__health` endpoint you can use to check if the service is working or not.
 When too many requests to object storage fail a circuit breaker will open and requests will be refused for a configurable amount of time to avoid cascading failures.
 
-### Configuration
+## Configuration
 
 You can configure the app using either a `.env` file or environment variables. The available settings are as follows:
 
-#### Logging
+### Logging
 - `LOG_LEVEL` - the log level to run the application at. (defaults to `info`. Available values are: `'fatal' | 'error' | 'warn' | 'info' | 'debug' | 'trace'`)
 
-#### Object storage (S3) config
+### Object storage (S3) config
 - `S3_ENDPOINT` - The endpoint to an S3 compatible object storage system. Defaults to `http://s3.amazonaws.com`
 - `S3_BUCKET` - The bucket to use (optional, if set it overrides the S3_ALLOWED_BUCKETS option).
 - `S3_REGION` - The region to use for Amazon S3.
@@ -61,20 +61,20 @@ You can configure the app using either a `.env` file or environment variables. T
 - `S3_SECRET_KEY` - The secret key to use in order to access the object storage system (required).
 - `S3_ALLOWED_BUCKETS` - list of S3 buckets allowed when in multi-bucket mode. Bucket to use will be inferred from the hostname.
 
-#### HTTP Server config
+### HTTP Server config
 - `HTTP_MAX_AGE` - The max age to use in the cache headers. Defaults to `31536000`
 - `HTTP_PORT` - The http port to use. Defaults to `8080`
 - `HTTP_PATH_SEPARATOR` - The separator string to use in the beginning of the settings bit of the url. Defaults to `__processed`
 
-#### Image processing config
+### Image processing config
 - `STORE_IMAGES` - Flag to toggle storing of transformed images to the object storage system. Defaults to `true`
 - `SHOW_TRANSFORMED_HEADER` - Flag to enable showing a custom `X-Pulitzer-Transformed` header when image is transformed by pulitzer. Defaults to `false`
 
-#### Health check config
+### Health check config
 - `CIRCUIT_BREAKER_ENABLED` - Enable or disable the circuit breaker. Defaults to `true`
 - `CIRCUIT_BREAKER_TIMEOUT` - The time in milliseconds that action should be allowed to execute before timing out. Timeout can be disabled by setting this to false. Defaults 10000 (10 seconds)
 - `CIRCUIT_BREAKER_RESET_TIMEOUT` - The time in milliseconds to wait before setting the breaker to halfOpen state, and trying the action again. Defaults to 30000 (30 seconds)
 - `CIRCUIT_BREAKER_ERROR_PERCENTAGE_THRESHOLD` - The error percentage at which to open the circuit and start short-circuiting requests to fallback. Defaults to 50 (50%)
 
-#### AVIF support
+### AVIF support
 - `ENABLE_AVIF_SUPPORT` - Enable AVIF support. This is currently experimental.
