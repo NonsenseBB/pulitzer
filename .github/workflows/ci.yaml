@@ -80,6 +80,6 @@ jobs:
           username: ${{ github.actor }}
           password: ${{ secrets.GITHUB_TOKEN }}
           registry: docker.pkg.github.com
-          repository: d3x7r0/pulitzer/pulitzer
+          repository: NonsenseBB/pulitzer/pulitzer
           tag_with_ref: false
           tags: unstable

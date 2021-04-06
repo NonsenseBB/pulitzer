@@ -1,7 +1,7 @@
 # Pulitzer
 Image resizing and format converting proxy
 
-[![CI](https://img.shields.io/github/workflow/status/d3x7r0/pulitzer/CI/master?logo=github&style=for-the-badge)](https://github.com/d3x7r0/pulitzer)
+[![CI](https://img.shields.io/github/workflow/status/NonsenseBB/pulitzer/CI/master?logo=github&style=for-the-badge)](https://github.com/NonsenseBB/pulitzer)
 [![Docker Hub](https://img.shields.io/docker/v/nonsensebb/pulitzer?label=Docker&logo=docker&sort=semver&style=for-the-badge)](https://hub.docker.com/r/nonsensebb/pulitzer/)
 
 ## What it does
