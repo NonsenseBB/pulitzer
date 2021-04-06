@@ -46,6 +46,10 @@ Will proxy to:
 The application also exposes an `/__health` endpoint you can use to check if the service is working or not.
 When too many requests to object storage fail a circuit breaker will open and requests will be refused for a configurable amount of time to avoid cascading failures.
 
+### Example
+
+You can check an example of how to use pulitzer at [examples/docker-compose](./examples/docker-compose)
+
 ## Configuration
 
 You can configure the app using either a `.env` file or environment variables. The available settings are as follows:
