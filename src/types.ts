@@ -1,5 +1,5 @@
-import { BucketItemStat } from 'minio'
-import { Stream } from 'stream'
+import type { BucketItemStat } from 'minio'
+import type { Stream } from 'stream'
 
 export enum ImageFormat {
   PNG = 'PNG',

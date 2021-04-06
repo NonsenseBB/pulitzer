@@ -1,10 +1,11 @@
-import { Readable as ReadableStream } from 'stream'
-import { BucketItemStat, Client, ItemBucketMetadata } from 'minio'
+import type { Readable as ReadableStream } from 'stream'
+import type { BucketItemStat, Client, ItemBucketMetadata } from 'minio'
 import CircuitBreaker from 'opossum'
 
 import { HealthStatus } from '../health/types'
+import logger from '../logger'
 
-import { IS3Client } from './types'
+import type { IS3Client } from './types'
 
 enum METHOD {
   statObject,
@@ -33,17 +34,17 @@ export default class S3Client implements IS3Client {
 
     this.#breaker.on(
       'close',
-      () => console.info('Circuit breaker closed', { bucket: this.#bucketName }),
+      () => logger.info({ bucket: this.#bucketName }, 'Circuit breaker closed'),
     )
 
     this.#breaker.on(
       'halfOpen',
-      () => console.error('Circuit breaker half open, next request will re-evaluate status', { bucket: this.#bucketName }),
+      () => logger.error({ bucket: this.#bucketName }, 'Circuit breaker half open, next request will re-evaluate status'),
     )
 
     this.#breaker.on(
       'open',
-      () => console.error('Circuit breaker opened', { bucket: this.#bucketName }),
+      () => logger.error({ bucket: this.#bucketName }, 'Circuit breaker opened'),
     )
   }
 

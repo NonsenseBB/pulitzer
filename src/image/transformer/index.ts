@@ -1,17 +1,24 @@
-import sharp, { Sharp } from 'sharp'
+import type { Request } from 'express'
+import type { Sharp } from 'sharp'
+import sharp from 'sharp'
 
-import { ImageFormat, ProcessOptions } from '../../types'
+import type { ProcessOptions } from '../../types'
+import { ImageFormat } from '../../types'
 
 import { applyBlurTransform } from './blur'
 import { applyResizeTransform } from './resize'
 import { applyFormatTransform } from './format'
 
-export function buildTransformer(opts: ProcessOptions): Sharp {
+
+export function buildTransformer(
+  req: Request,
+  opts: ProcessOptions
+): Sharp {
   let transformer = sharp()
 
-  transformer = applyBlurTransform(transformer, opts)
-  transformer = applyResizeTransform(transformer, opts)
-  transformer = applyFormatTransform(transformer, opts)
+  transformer = applyBlurTransform(req, transformer, opts)
+  transformer = applyResizeTransform(req, transformer, opts)
+  transformer = applyFormatTransform(req, transformer, opts)
 
   return transformer
 }

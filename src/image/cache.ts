@@ -1,20 +1,28 @@
-import { Readable } from 'stream'
+import type { Readable } from 'stream'
+import type { Request } from 'express'
 
 import { getClient } from '../s3'
-import { ProcessOptions, ProcessResult } from '../types'
+import type { ProcessOptions, ProcessResult } from '../types'
 import config from '../config'
 
-export async function getCachedVersion(opts: ProcessOptions, ctx: ProcessResult): Promise<ProcessResult> {
+export async function getCachedVersion(
+  req: Request,
+  opts: ProcessOptions,
+  ctx: ProcessResult,
+): Promise<ProcessResult> {
   try {
     const s3 = getClient(opts.bucket)
 
     const data = await s3.statObject(opts.transformed)
     const stream = await s3.getObject(opts.transformed)
 
-    console.debug('Cached version of the transformed file found, serving directly from storage', {
-      bucket: opts.bucket,
-      objectName: opts.transformed,
-    })
+    req.log.debug(
+      {
+        bucket: opts.bucket,
+        objectName: opts.transformed,
+      },
+      'Cached version of the transformed file found, serving directly from storage',
+    )
 
     return {
       ...ctx,
@@ -23,11 +31,12 @@ export async function getCachedVersion(opts: ProcessOptions, ctx: ProcessResult)
       stream,
     }
   } catch (err) {
-    console.debug('Unable to fetch cached version, assuming it doesn\'t exist', { err })
+    req.log.debug({ err }, 'Unable to fetch cached version, assuming it doesn\'t exist')
   }
 }
 
 export function storeCachedVersion(
+  req: Request,
   opts: ProcessOptions,
   stream: Readable,
   contentType: string,
@@ -38,23 +47,32 @@ export function storeCachedVersion(
 
   const objectName = opts.transformed
 
-  console.debug('Will store file to object storage', {
-    bucket: opts.bucket,
-    objectName: opts.transformed,
-    contentType,
-  })
+  req.log.debug(
+    {
+      bucket: opts.bucket,
+      objectName: opts.transformed,
+      contentType,
+    },
+    'Will store file to object storage',
+  )
 
   getClient(opts.bucket)
     .putObject(objectName, stream, { 'content-type': contentType })
-    .then(() => console.debug('File stored to object storage', {
-      bucket: opts.bucket,
-      objectName: opts.transformed,
-      contentType,
-    }))
-    .catch(err => console.warn(`Unable to save file`, {
-      bucket: opts.bucket,
-      objectName: opts.transformed,
-      contentType,
-      err,
-    }))
+    .then(() => req.log.debug(
+      {
+        bucket: opts.bucket,
+        objectName: opts.transformed,
+        contentType,
+      },
+      'File stored to object storage'),
+    )
+    .catch(err => req.log.warn(
+      {
+        bucket: opts.bucket,
+        objectName: opts.transformed,
+        contentType,
+        err,
+      },
+      `Unable to save file`,
+    ))
 }

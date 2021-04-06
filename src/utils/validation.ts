@@ -1,13 +1,20 @@
-import { ImageFormat, ProcessOptions } from '../types'
-import { Config } from '../config/types'
+import type { Request } from 'express'
 
-export function validateBucket(config: Config, opts: ProcessOptions): ProcessOptions | undefined {
+import type { ProcessOptions } from '../types'
+import type { Config } from '../config/types'
+import { ImageFormat } from '../types'
+
+export function validateBucket(
+  req: Request,
+  config: Config,
+  opts: ProcessOptions,
+): ProcessOptions | undefined {
   if (!opts) {
     return
   }
 
   if (!config.enable_avif_support && opts.settings.format === ImageFormat.AVIF) {
-    console.warn('AVIF format is disabled')
+    req.log.debug('AVIF format is disabled')
     return
   }
 
@@ -18,7 +25,7 @@ export function validateBucket(config: Config, opts: ProcessOptions): ProcessOpt
   }
 
   if (!config.s3.allowedBuckets.includes(opts.bucket)) {
-    console.warn('%s is not in the list of allowed buckets', opts.bucket)
+    req.log.warn('%s is not in the list of allowed buckets', opts.bucket)
     return
   }
 

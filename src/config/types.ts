@@ -1,3 +1,5 @@
+import type { LoggerOptions } from 'pino'
+
 export type S3Config = {
   endPoint: string
   port?: number | undefined
@@ -29,4 +31,5 @@ export type Config = {
   s3: S3Config
   circuitBreaker: CircuitBreakerConfig
   http: HTTPConfig
+  logging: LoggerOptions
 }

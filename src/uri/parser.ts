@@ -1,13 +1,15 @@
 import { URL } from 'url'
 
+import type {
+  ProcessOptions,
+  ProcessSettings
+} from '../types'
 import config from '../config'
 import {
   FitEnum,
   FitEnumFromString,
   ImageFormat,
-  ImageFormatFromString,
-  ProcessOptions,
-  ProcessSettings,
+  ImageFormatFromString
 } from '../types'
 
 const MAX_WIDTH_REGEX = /mw-(\d+)/i

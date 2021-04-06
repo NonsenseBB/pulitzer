@@ -1,4 +1,5 @@
-import { FitEnum, ImageFormat, ProcessOptions } from '../types'
+import type { ProcessOptions } from '../types'
+import { FitEnum, ImageFormat } from '../types'
 
 import { parseURI } from './parser'
 

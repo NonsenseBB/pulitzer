@@ -1,4 +1,4 @@
-import { ErrorRequestHandler } from 'express'
+import type { ErrorRequestHandler } from 'express'
 
 export interface NetworkError extends Error {
   code?: string
@@ -14,18 +14,19 @@ export function throwNotFoundError(msg = 'NotFound'): void {
 export const errorHandler: ErrorRequestHandler = (err, req, res, next) => {
   if (res.headersSent) {
     if (err.code === 'NotFound') {
-      console.debug(err)
+      req.log.debug({ err }, 'ErrorHandler: Not Found')
     } else {
-      console.error(err)
+      req.log.error({ err }, 'ErrorHandler: Error')
     }
     return
   }
 
   if (err.code === 'NotFound') {
+    req.log.debug({ err }, 'ErrorHandler: NotFound')
     res.sendStatus(404)
     return
   }
 
-  console.error(err)
+  req.log.error({ err }, 'ErrorHandler: Error')
   res.sendStatus(500)
 }

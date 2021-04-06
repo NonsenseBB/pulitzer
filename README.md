@@ -50,6 +50,9 @@ When too many requests to object storage fail a circuit breaker will open and re
 
 You can configure the app using either a `.env` file or environment variables. The available settings are as follows:
 
+#### Logging
+- `LOG_LEVEL` - the log level to run the application at. (defaults to `info`. Available values are: `'fatal' | 'error' | 'warn' | 'info' | 'debug' | 'trace'`)
+
 #### Object storage (S3) config
 - `S3_ENDPOINT` - The endpoint to an S3 compatible object storage system. Defaults to `http://s3.amazonaws.com`
 - `S3_BUCKET` - The bucket to use (optional, if set it overrides the S3_ALLOWED_BUCKETS option).

@@ -1,16 +1,22 @@
-import sharp, { ResizeOptions, Sharp } from 'sharp'
+import type { ResizeOptions, Sharp } from 'sharp'
+import sharp from 'sharp'
+import type { Request } from 'express'
 
-import { ProcessOptions, ProcessSettings } from '../../types'
+import type { ProcessOptions, ProcessSettings } from '../../types'
 
-export function applyResizeTransform(transformer: Sharp, opts: ProcessOptions): Sharp {
+export function applyResizeTransform(
+  req: Request,
+  transformer: Sharp,
+  opts: ProcessOptions,
+): Sharp {
   const { settings } = opts
   const resizeOptions = buildResizeOptions(settings)
 
   if (resizeOptions) {
-    console.debug('Will resize', {
+    req.log.debug('Will resize', {
       bucket: opts.bucket,
       objectName: opts.transformed,
-      options: resizeOptions
+      options: resizeOptions,
     })
     return transformer.resize(resizeOptions)
   }

@@ -1,5 +1,6 @@
 /* eslint-disable @typescript-eslint/explicit-module-boundary-types,@typescript-eslint/no-explicit-any */
-import { FitEnum, ImageFormat, ProcessOptions, ProcessSettings } from '../../types'
+import type { ProcessOptions, ProcessSettings } from '../../types'
+import { FitEnum, ImageFormat } from '../../types'
 
 export function buildOptions(opts: any, settings?: any): ProcessOptions {
   return {

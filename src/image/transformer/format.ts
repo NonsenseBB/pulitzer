@@ -1,14 +1,21 @@
-import { FormatEnum, JpegOptions, Sharp } from 'sharp'
+import type { FormatEnum, JpegOptions, Sharp } from 'sharp'
+import type { Request } from 'express'
 
-import { ImageFormat, ProcessOptions, ProcessSettings } from '../../types'
+import type { ProcessOptions, ProcessSettings } from '../../types'
+import { ImageFormat } from '../../types'
 
-export function applyFormatTransform(transformer: Sharp, opts: ProcessOptions): Sharp {
+
+export function applyFormatTransform(
+  req: Request,
+  transformer: Sharp,
+  opts: ProcessOptions,
+): Sharp {
   const { settings } = opts
 
   const { format, formatOptions } = buildFormatOptions(settings)
 
   if (format) {
-    console.debug('Will convert image format', {
+    req.log.debug('Will convert image format', {
       bucket: opts.bucket,
       objectName: opts.transformed,
       format: settings.format,

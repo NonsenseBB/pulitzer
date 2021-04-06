@@ -1,4 +1,4 @@
-import { Express } from 'express'
+import type { Express } from 'express'
 
 import { asAsyncRoute, withMethodFilter } from '../utils/routes'
 import { validateBucket } from '../utils/validation'
@@ -15,11 +15,12 @@ export default function withTransformRoute(app: Express): Express {
       asAsyncRoute(
         async (req, res) => {
           const opts = validateBucket(
+            req,
             config,
             parseURI(req.hostname, req.url),
           )
 
-          console.debug('Processing request', { url: req.url, hostname: req.hostname, opts })
+          req.log.debug({ url: req.url, hostname: req.hostname, opts }, 'Processing request')
 
           if (!opts) {
             throwNotFoundError()
@@ -30,7 +31,12 @@ export default function withTransformRoute(app: Express): Express {
           const originalData = await s3.statObject(opts.original)
           const dataStream = await s3.getObject(opts.original)
 
-          const ctx = await process(opts, originalData, dataStream)
+          const ctx = await process(
+            req,
+            opts,
+            originalData,
+            dataStream,
+          )
 
           const {
             data,

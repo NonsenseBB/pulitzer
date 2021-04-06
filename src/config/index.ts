@@ -1,7 +1,9 @@
 /* eslint-disable @typescript-eslint/no-var-requires */
+import type { LoggerOptions } from 'pino'
+
 require('dotenv').config()
 
-import { Config } from './types'
+import type { Config } from './types'
 
 const { ConnectionString } = require('connection-string')
 
@@ -10,13 +12,13 @@ const DEFAULT_S3_ENDPOINT = 's3.amazonaws.com'
 const DEFAULT_HTTP_MAX_AGE = 60 * 60 * 24 * 365 // 1 year
 const DEFAULT_PATH_SEPARATOR = '__processed'
 
-const connection = new ConnectionString(process.env.S3_ENDPOINT || DEFAULT_S3_ENDPOINT)
+const connection = new ConnectionString(process.env.S3_ENDPOINT ?? DEFAULT_S3_ENDPOINT)
 
-const pathSeparator = (process.env.HTTP_PATH_SEPARATOR || DEFAULT_PATH_SEPARATOR)
+const pathSeparator = (process.env.HTTP_PATH_SEPARATOR ?? DEFAULT_PATH_SEPARATOR)
   .replace(/\/$/g, ' ') // remove trailing slash
 
 const S3_BUCKET = process.env.S3_BUCKET as string | undefined
-const ALLOWED_BUCKETS = (process.env.S3_ALLOWED_BUCKETS as string | undefined) || ''
+const ALLOWED_BUCKETS = (process.env.S3_ALLOWED_BUCKETS as string | undefined) ?? ''
 
 const allowedBuckets = ALLOWED_BUCKETS.split(',')
   .concat(S3_BUCKET)
@@ -28,6 +30,10 @@ export default {
   store_images: process.env.STORE_IMAGES !== 'false',
   show_transformed_header: !!process.env.SHOW_TRANSFORMED_HEADER,
   enable_avif_support: process.env.ENABLE_AVIF_SUPPORT === 'true',
+  logging: {
+    level: process.env.LOG_LEVEL ?? "info",
+    prettyPrint: process.env.NODE_ENV === 'development',
+  } as LoggerOptions,
   s3: {
     endPoint: connection.hostname,
     port: connection.port as number | undefined,
@@ -45,8 +51,8 @@ export default {
     resetTimeout: process.env.CIRCUIT_BREAKER_RESET_TIMEOUT as unknown as number,
   },
   http: {
-    port: (process.env.HTTP_PORT || DEFAULT_HTTP_PORT) as number,
-    max_age: (process.env.HTTP_MAX_AGE || DEFAULT_HTTP_MAX_AGE) as number,
+    port: (process.env.HTTP_PORT ?? DEFAULT_HTTP_PORT) as number,
+    max_age: (process.env.HTTP_MAX_AGE ?? DEFAULT_HTTP_MAX_AGE) as number,
     path_separator: pathSeparator as string,
   },
 } as Config

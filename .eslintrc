@@ -7,5 +7,14 @@
   },
   "ignorePatterns": [
     "build/"
-  ]
+  ],
+  "rules": {
+    "no-console": "error",
+    "@typescript-eslint/consistent-type-imports": [
+      "warn",
+      {
+        "prefer": "type-imports"
+      }
+    ]
+  }
 }

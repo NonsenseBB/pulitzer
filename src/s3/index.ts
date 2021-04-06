@@ -3,7 +3,7 @@ import { Client } from 'minio'
 import { HealthStatus } from '../health/types'
 import config from '../config'
 
-import { IS3Client } from './types'
+import type { IS3Client } from './types'
 import S3Client from './client'
 
 const CLIENTS: Map<string, IS3Client> = new Map<string, IS3Client>()
