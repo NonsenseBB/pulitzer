@@ -11,7 +11,7 @@ RUN npm run build
 
 FROM node:lts-alpine
 
-RUN apk add --no-cache tini
+RUN apk add --no-cache tini curl
 
 WORKDIR /app
 
@@ -23,6 +23,7 @@ COPY --from=builder /usr/src/app/build ./build
 ENV NODE_ENV=production
 ENV HTTP_PORT 80
 EXPOSE 80
+HEALTHCHECK CMD curl --fail http://localhost:${HTTP_PORT}/__health || exit 1
 
 ENTRYPOINT ["/sbin/tini", "--"]
 
