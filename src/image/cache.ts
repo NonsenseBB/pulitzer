@@ -22,10 +22,8 @@ export async function getCachedVersion(opts: ProcessOptions, ctx: ProcessResult)
       contentType: data.metaData['content-type'] || '',
       stream,
     }
-  } catch (e) {
-    if (e.code !== 'NotFound') {
-      throw e
-    }
+  } catch (err) {
+    console.debug('Unable to fetch cached version, assuming it doesn\'t exist', { err })
   }
 }
 

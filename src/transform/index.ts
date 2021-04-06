@@ -19,6 +19,8 @@ export default function withTransformRoute(app: Express): Express {
             parseURI(req.hostname, req.url),
           )
 
+          console.debug('Processing request', { url: req.url, hostname: req.hostname, opts })
+
           if (!opts) {
             throwNotFoundError()
           }
