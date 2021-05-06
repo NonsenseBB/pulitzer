@@ -30,8 +30,8 @@ export function parseURI(hostname: string, uri: string): ProcessOptions | undefi
 
   const result: ProcessOptions = {
     bucket: parsedUri.hostname.toLowerCase(),
-    transformed: parsedUri.pathname.replace(/^\//, ''), // remove leading slash
-    original: objectName,
+    transformed: decodeURIComponent(parsedUri.pathname.replace(/^\//, '')), // remove leading slash
+    original: decodeURIComponent(objectName),
     settings: {
       format: ImageFormat.ORIGINAL,
       fit: FitEnum.COVER,
@@ -114,7 +114,7 @@ export function parseURI(hostname: string, uri: string): ProcessOptions | undefi
 
   return {
     ...result,
-    original,
+    original: decodeURIComponent(original),
     settings,
   }
 }

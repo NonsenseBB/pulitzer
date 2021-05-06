@@ -86,6 +86,22 @@ describe('parseURI()', () => {
     } as ProcessOptions)
   })
 
+  it('parses URIs with special characters correctly', () => {
+    const result = parseURI('example.com', '/uploads/2021/05/__processed/mw-768/ff-webp/_/JPEG-Image-840-×-1200-pixels.jpg')
+
+    expect(result).toEqual({
+      bucket: 'example.com',
+      transformed: 'uploads/2021/05/__processed/mw-768/ff-webp/_/JPEG-Image-840-×-1200-pixels.jpg',
+      original: 'uploads/2021/05/JPEG-Image-840-×-1200-pixels.jpg',
+      settings: {
+        fit: FitEnum.COVER,
+        format: ImageFormat.WEBP,
+        maxWidth: 768,
+        preview: false,
+      },
+    } as ProcessOptions)
+  })
+
   it('parses URIs with JPG format correctly', () => {
     const result = parseURI('example.com', '/uploads/2020/02/__processed/preview/ff-jpg/fill/1024x768/_/picture.jpg')
 
