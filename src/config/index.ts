@@ -32,7 +32,6 @@ export default {
   enable_avif_support: process.env.ENABLE_AVIF_SUPPORT === 'true',
   logging: {
     level: process.env.LOG_LEVEL ?? "info",
-    prettyPrint: process.env.NODE_ENV === 'development',
   } as LoggerOptions,
   s3: {
     endPoint: connection.hostname,

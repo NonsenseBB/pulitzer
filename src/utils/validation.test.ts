@@ -24,7 +24,6 @@ const DUMMY_CONFIG: Config = {
   store_images: false,
   logging: {
     level: 'debug',
-    prettyPrint: false,
   },
 }
 
