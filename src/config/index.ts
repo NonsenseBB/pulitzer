@@ -30,6 +30,7 @@ export default {
   store_images: process.env.STORE_IMAGES !== 'false',
   show_transformed_header: !!process.env.SHOW_TRANSFORMED_HEADER,
   enable_avif_support: process.env.ENABLE_AVIF_SUPPORT === 'true',
+  timeout: parseInt(process.env.PROCESSING_TIMEOUT, 10) || undefined,
   logging: {
     level: process.env.LOG_LEVEL ?? "info",
   } as LoggerOptions,

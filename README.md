@@ -72,6 +72,7 @@ You can configure the app using either a `.env` file or environment variables. T
 ### Image processing config
 - `STORE_IMAGES` - Flag to toggle storing of transformed images to the object storage system. Defaults to `true`
 - `SHOW_TRANSFORMED_HEADER` - Flag to enable showing a custom `X-Pulitzer-Transformed` header when image is transformed by pulitzer. Defaults to `false`
+- `PROCESSING_TIMEOUT` - Establish a processing limit for transformations (in seconds). Defaults to infinity
 
 ### Health check config
 - `CIRCUIT_BREAKER_ENABLED` - Enable or disable the circuit breaker. Defaults to `true`
@@ -80,4 +81,4 @@ You can configure the app using either a `.env` file or environment variables. T
 - `CIRCUIT_BREAKER_ERROR_PERCENTAGE_THRESHOLD` - The error percentage at which to open the circuit and start short-circuiting requests to fallback. Defaults to 50 (50%)
 
 ### AVIF support
-- `ENABLE_AVIF_SUPPORT` - Enable AVIF support. This is currently experimental.
+- `ENABLE_AVIF_SUPPORT` - Enable AVIF support. This is currently experimental due to performance concerns.

@@ -4,6 +4,7 @@ import sharp from 'sharp'
 
 import type { ProcessOptions } from '../../types'
 import { ImageFormat } from '../../types'
+import config from '../../config'
 
 import { applyBlurTransform } from './blur'
 import { applyResizeTransform } from './resize'
@@ -12,13 +13,19 @@ import { applyFormatTransform } from './format'
 
 export function buildTransformer(
   req: Request,
-  opts: ProcessOptions
+  opts: ProcessOptions,
 ): Sharp {
   let transformer = sharp()
 
   transformer = applyBlurTransform(req, transformer, opts)
   transformer = applyResizeTransform(req, transformer, opts)
   transformer = applyFormatTransform(req, transformer, opts)
+
+  if (config.timeout) {
+    transformer = transformer.timeout({
+      seconds: config.timeout,
+    })
+  }
 
   return transformer
 }

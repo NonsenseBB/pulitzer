@@ -28,6 +28,7 @@ export type Config = {
   store_images: boolean
   show_transformed_header: boolean
   enable_avif_support: boolean
+  timeout?: number
   s3: S3Config
   circuitBreaker: CircuitBreakerConfig
   http: HTTPConfig
