@@ -1,5 +1,6 @@
 import type { Express } from 'express'
 import express from 'express'
+import {  createHttpTerminator} from 'http-terminator'
 
 import config from './config'
 import logger from './logger'
@@ -26,7 +27,9 @@ app.disable('x-powered-by')
 // Error handler
 app.use(errorHandler)
 
-app.listen(
+const server = app.listen(
   config.http.port,
   () => logger.info(`Listening on port ${config.http.port}`),
 )
+
+createHttpTerminator({ server })
