@@ -13,9 +13,9 @@ export type S3Config = {
 
 export type CircuitBreakerConfig = {
   enabled: boolean
-  timeout: number
-  errorThresholdPercentage: number
-  resetTimeout: number
+  timeout?: number
+  errorThresholdPercentage?: number
+  resetTimeout?: number
 }
 
 export type HTTPConfig = {

@@ -1,16 +1,59 @@
 {
   "compilerOptions": {
-    "target": "es2019",
-    "module": "commonjs",
-    "moduleResolution": "Node",
+    "outDir": "build",
+
+    "allowJs": true,
+
+    "pretty": true,
+    "lib": ["es2022"],
+    "target": "es2022",
+    "module": "CommonJS",
+    "moduleResolution": "node",
+    "resolveJsonModule": true,
     "esModuleInterop": true,
-    "lib": ["es2020"],
-    "outDir": "build"
+
+    "declaration": true,
+    "declarationMap": true,
+    "sourceMap": true,
+    "composite": true,
+    "noEmitOnError": true,
+
+    "skipLibCheck": true,
+
+    "strict": true,
+    "strictBindCallApply": false,
+    "strictNullChecks": true,
+    "strictFunctionTypes": false,
+    "useUnknownInCatchVariables": false,
+    "noImplicitOverride": true,
+
+    "noUnusedLocals": false,
+    "noUnusedParameters": false,
+    "allowUnusedLabels": false,
+
+    "alwaysStrict": true,
+    "preserveConstEnums": true,
+    "newLine": "lf"
   },
   "include": [
-    "src/**/*"
+    "./src/**/*",
+    "./src/**/*.json"
   ],
   "exclude": [
-    "node_modules"
-  ]
+    "build",
+    "node_modules",
+    "jest.config.js",
+    "./tests/**",
+    "./src/**/*.spec.ts",
+    "./src/**/*.spec.js",
+    "./src/**/*.test.ts",
+    "./src/**/*.test.js",
+    "./src/**/__tests__/**",
+    "package.json",
+    "tsconfig.json",
+  ],
+  "references": [],
+  "ts-node": {
+    "swc": true
+  }
 }

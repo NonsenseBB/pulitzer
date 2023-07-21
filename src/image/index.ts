@@ -61,7 +61,7 @@ export async function process(
 
   storeCachedVersion(req, opts, transformedStream, contentType)
 
-  let size: number = undefined
+  let size: number | undefined = undefined
   transformer.on('info', info => size = info.size)
 
   return {

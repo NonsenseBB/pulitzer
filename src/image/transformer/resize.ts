@@ -27,15 +27,14 @@ export function applyResizeTransform(
 const DEFAULT_PREVIEW_SIZE = 42
 
 export function buildResizeOptions(settings: ProcessSettings): ResizeOptions | undefined {
-  let resizeOptions: ResizeOptions = undefined
+  let resizeOptions: Partial<ResizeOptions> | undefined = undefined
 
   if (settings.width) {
     resizeOptions = {
-      ...resizeOptions,
       withoutEnlargement: true,
       width: settings.width,
       height: settings.height,
-      fit: sharp.fit[settings.fit.toString().toLowerCase()],
+      fit: sharp.fit[settings.fit],
       position: sharp.strategy.attention, // TODO: allow control of this setting
     }
   }
@@ -56,14 +55,15 @@ export function buildResizeOptions(settings: ProcessSettings): ResizeOptions | u
       height = width
     }
 
-    resizeOptions = {
-      ...resizeOptions,
-      fit: sharp.fit.inside,
-      kernel: sharp.kernel.nearest,
-      withoutEnlargement: true,
-      width,
-      height,
+    if (!resizeOptions) {
+      resizeOptions = {}
     }
+
+    resizeOptions.fit = sharp.fit.inside
+    resizeOptions.kernel = sharp.kernel.nearest
+    resizeOptions.withoutEnlargement = true
+    resizeOptions.width = width
+    resizeOptions.height = height
   }
 
   if (settings.maxWidth) {
@@ -73,12 +73,13 @@ export function buildResizeOptions(settings: ProcessSettings): ResizeOptions | u
       height = Math.floor(settings.maxWidth * resizeOptions.height / resizeOptions.width)
     }
 
-    resizeOptions = {
-      ...resizeOptions,
-      withoutEnlargement: true,
-      width: settings.maxWidth,
-      height,
+    if (!resizeOptions) {
+      resizeOptions = {}
     }
+
+    resizeOptions.withoutEnlargement = true
+    resizeOptions.width = settings.maxWidth
+    resizeOptions.height = height
   }
 
   return resizeOptions

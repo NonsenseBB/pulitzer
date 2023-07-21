@@ -21,7 +21,7 @@ const S3_BUCKET = process.env.S3_BUCKET as string | undefined
 const ALLOWED_BUCKETS = (process.env.S3_ALLOWED_BUCKETS as string | undefined) ?? ''
 
 const allowedBuckets = ALLOWED_BUCKETS.split(',')
-  .concat(S3_BUCKET)
+  .concat(S3_BUCKET || [])
   .filter(item => !!item)
   .filter((item, idx, arr) => arr.indexOf(item) === idx)
   .map(item => item.toLowerCase())
@@ -30,7 +30,7 @@ export default {
   store_images: process.env.STORE_IMAGES !== 'false',
   show_transformed_header: !!process.env.SHOW_TRANSFORMED_HEADER,
   enable_avif_support: process.env.ENABLE_AVIF_SUPPORT === 'true',
-  timeout: parseInt(process.env.PROCESSING_TIMEOUT, 10) || undefined,
+  timeout: parseInt(process.env.PROCESSING_TIMEOUT ?? '0', 10) || undefined,
   logging: {
     level: process.env.LOG_LEVEL ?? "info",
   } as LoggerOptions,

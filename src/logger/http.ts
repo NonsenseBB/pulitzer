@@ -1,6 +1,8 @@
 import type { Express } from 'express'
 import { ulid } from 'ulid'
 import pinoHttp from 'pino-http'
+// eslint-disable-next-line @typescript-eslint/ban-ts-comment
+// @ts-ignore
 import URL from 'fast-url-parser'
 
 import { HEALTH_ENDPOINT } from '../health'

@@ -1,11 +1,9 @@
 import type { Readable as ReadableStream } from 'stream'
-import type { BucketItemStat, Client, ItemBucketMetadata } from 'minio'
+import type { BucketItemStat, Client, ItemBucketMetadata, UploadedObjectInfo } from 'minio'
 import CircuitBreaker from 'opossum'
 
 import { HealthStatus } from '../health/types'
 import logger from '../logger'
-
-import type { IS3Client } from './types'
 
 enum METHOD {
   statObject,
@@ -13,7 +11,7 @@ enum METHOD {
   putObject,
 }
 
-export default class S3Client implements IS3Client {
+export default class S3Client {
   readonly #client: Client
   readonly #breaker: CircuitBreaker
   readonly #bucketName: string
@@ -56,7 +54,7 @@ export default class S3Client implements IS3Client {
     return this.#client.getObject(this.#bucketName, objectName)
   }
 
-  #putObject = (objectName: string, stream: ReadableStream, metaData?: ItemBucketMetadata): Promise<string> => {
+  #putObject = (objectName: string, stream: ReadableStream, metaData?: ItemBucketMetadata): Promise<UploadedObjectInfo> => {
     return this.#client.putObject(this.#bucketName, objectName, stream, metaData)
   }
 
@@ -67,8 +65,13 @@ export default class S3Client implements IS3Client {
       case METHOD.getObject:
         return this.#getObject(objectName)
       case METHOD.putObject:
+        if (!stream) {
+          throw new Error('Missing input stream in putObject call')
+        }
         return this.#putObject(objectName, stream, metaData)
     }
+
+    throw new Error('Unknown method')
   }
 
   dispatch = (...params: unknown[]): unknown => {
@@ -95,7 +98,7 @@ export default class S3Client implements IS3Client {
     return this.dispatch(METHOD.getObject, objectName) as Promise<ReadableStream>
   }
 
-  putObject(objectName: string, stream: ReadableStream, metaData?: ItemBucketMetadata): Promise<string> {
-    return this.dispatch(METHOD.putObject, objectName, stream, metaData) as Promise<string>
+  putObject(objectName: string, stream: ReadableStream, metaData?: ItemBucketMetadata): Promise<UploadedObjectInfo> {
+    return this.dispatch(METHOD.putObject, objectName, stream, metaData) as Promise<UploadedObjectInfo>
   }
 }

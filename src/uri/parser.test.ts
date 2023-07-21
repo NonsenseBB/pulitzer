@@ -1,5 +1,5 @@
 import type { ProcessOptions } from '../types'
-import { FitEnum, ImageFormat } from '../types'
+import { ImageFormat } from '../types'
 
 import { parseURI } from './parser'
 
@@ -13,7 +13,7 @@ describe('parseURI()', () => {
       original: 'uploads/2020/02/picture.jpg',
       settings: {
         format: ImageFormat.ORIGINAL,
-        fit: FitEnum.COVER,
+        fit: 'cover',
         preview: false,
       },
     } as ProcessOptions)
@@ -28,7 +28,7 @@ describe('parseURI()', () => {
       original: 'uploads/2020/02/picture.jpg',
       settings: {
         format: ImageFormat.ORIGINAL,
-        fit: FitEnum.COVER,
+        fit: 'cover',
         preview: false,
       },
     } as ProcessOptions)
@@ -43,7 +43,7 @@ describe('parseURI()', () => {
       original: 'uploads/2020/02/picture.jpg',
       settings: {
         format: ImageFormat.WEBP,
-        fit: FitEnum.CONTAIN,
+        fit: 'contain',
         maxWidth: 670,
         width: 4,
         height: 3,
@@ -61,7 +61,7 @@ describe('parseURI()', () => {
       original: 'uploads/2020/02/picture.jpg',
       settings: {
         format: ImageFormat.WEBP,
-        fit: FitEnum.FILL,
+        fit: 'fill',
         width: 1024,
         height: 768,
         preview: true,
@@ -78,7 +78,7 @@ describe('parseURI()', () => {
       original: 'uploads/2020/02/picture.jpg',
       settings: {
         format: ImageFormat.WEBP,
-        fit: FitEnum.FILL,
+        fit: 'fill',
         width: 1024,
         height: 768,
         preview: true,
@@ -94,7 +94,7 @@ describe('parseURI()', () => {
       transformed: 'uploads/2021/05/__processed/mw-768/ff-webp/_/JPEG-Image-840-×-1200-pixels.jpg',
       original: 'uploads/2021/05/JPEG-Image-840-×-1200-pixels.jpg',
       settings: {
-        fit: FitEnum.COVER,
+        fit: 'cover',
         format: ImageFormat.WEBP,
         maxWidth: 768,
         preview: false,
@@ -111,7 +111,7 @@ describe('parseURI()', () => {
       original: 'uploads/2020/02/picture.jpg',
       settings: {
         format: ImageFormat.JPEG,
-        fit: FitEnum.FILL,
+        fit: 'fill',
         width: 1024,
         height: 768,
         preview: true,
@@ -128,7 +128,7 @@ describe('parseURI()', () => {
       original: 'uploads/2020/02/picture.jpeg',
       settings: {
         format: ImageFormat.JPEG,
-        fit: FitEnum.FILL,
+        fit: 'fill',
         width: 1024,
         height: 768,
         preview: true,
@@ -145,7 +145,7 @@ describe('parseURI()', () => {
       original: 'uploads/2020/02/picture.png',
       settings: {
         format: ImageFormat.PNG,
-        fit: FitEnum.FILL,
+        fit: 'fill',
         width: 1024,
         height: 768,
         preview: true,
@@ -162,7 +162,7 @@ describe('parseURI()', () => {
       original: 'uploads/2020/02/picture.avif',
       settings: {
         format: ImageFormat.AVIF,
-        fit: FitEnum.FILL,
+        fit: 'fill',
         width: 1024,
         height: 768,
         preview: true,
@@ -179,7 +179,7 @@ describe('parseURI()', () => {
       original: 'uploads/2020/02/picture.jpg',
       settings: {
         format: ImageFormat.WEBP,
-        fit: FitEnum.FILL,
+        fit: 'fill',
         width: 1024,
         height: 768,
         preview: false,
@@ -196,7 +196,7 @@ describe('parseURI()', () => {
       original: 'uploads/2020/02/picture.jpg',
       settings: {
         format: ImageFormat.WEBP,
-        fit: FitEnum.FILL,
+        fit: 'fill',
         width: 1024,
         height: 768,
         preview: false,
@@ -213,7 +213,7 @@ describe('parseURI()', () => {
       original: 'uploads/2020/02/__processed/foo/bar/_/picture.jpg',
       settings: {
         format: ImageFormat.ORIGINAL,
-        fit: FitEnum.COVER,
+        fit: 'cover',
         preview: false,
       },
     } as ProcessOptions)

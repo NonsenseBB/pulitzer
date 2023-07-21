@@ -9,7 +9,7 @@ export async function getCachedVersion(
   req: Request,
   opts: ProcessOptions,
   ctx: ProcessResult,
-): Promise<ProcessResult> {
+): Promise<ProcessResult | void> {
   try {
     const s3 = getClient(opts.bucket)
 
@@ -58,10 +58,11 @@ export function storeCachedVersion(
 
   getClient(opts.bucket)
     .putObject(objectName, stream, { 'content-type': contentType })
-    .then(() => req.log.debug(
+    .then((res) => req.log.debug(
       {
         bucket: opts.bucket,
         objectName: opts.transformed,
+        version: res.versionId,
         contentType,
       },
       'File stored to object storage'),

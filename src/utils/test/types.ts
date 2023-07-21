@@ -1,19 +1,21 @@
-/* eslint-disable @typescript-eslint/explicit-module-boundary-types,@typescript-eslint/no-explicit-any */
 import type { ProcessOptions, ProcessSettings } from '../../types'
-import { FitEnum, ImageFormat } from '../../types'
+import { ImageFormat } from '../../types'
 
-export function buildOptions(opts: any, settings?: any): ProcessOptions {
+export function buildOptions(opts: Partial<ProcessOptions>, settings?: Partial<ProcessSettings>): ProcessOptions {
   return {
+    bucket: '',
+    original: '',
+    transformed: '',
     ...opts,
     settings: buildSettings(settings),
   }
 }
 
-export function buildSettings(settings: any): ProcessSettings {
+export function buildSettings(settings?: Partial<ProcessSettings>): ProcessSettings {
   return {
     preview: false,
     format: ImageFormat.ORIGINAL,
-    fit: FitEnum.COVER,
+    fit: 'cover',
     ...settings,
   }
 }

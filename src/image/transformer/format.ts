@@ -4,7 +4,6 @@ import type { Request } from 'express'
 import type { ProcessOptions, ProcessSettings } from '../../types'
 import { ImageFormat } from '../../types'
 
-
 export function applyFormatTransform(
   req: Request,
   transformer: Sharp,
@@ -36,8 +35,8 @@ type FormatOptionsResult = {
 }
 
 export function buildFormatOptions(settings: ProcessSettings): FormatOptionsResult {
-  let format: ImageFormat = undefined
-  let formatOptions: JpegOptions = undefined
+  let format: ImageFormat | undefined = undefined
+  let formatOptions: JpegOptions | undefined = undefined
 
   if (settings.format !== ImageFormat.ORIGINAL) {
     format = settings.format

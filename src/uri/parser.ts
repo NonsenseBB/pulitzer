@@ -1,15 +1,11 @@
 import { URL } from 'url'
 
-import type {
-  ProcessOptions,
-  ProcessSettings
-} from '../types'
 import config from '../config'
+import type { ProcessOptions } from '../types'
 import {
-  FitEnum,
   FitEnumFromString,
   ImageFormat,
-  ImageFormatFromString
+  ImageFormatFromString,
 } from '../types'
 
 const MAX_WIDTH_REGEX = /mw-(\d+)/i
@@ -22,7 +18,7 @@ const URI_PARSE_REGEX = new RegExp(
   `(.*)/${config.http.path_separator.replace(/[-/\\^$*+?.()|[\]{}]/g, '\\$&')}/(.*)/_/(.*)`,
 )
 
-export function parseURI(hostname: string, uri: string): ProcessOptions | undefined {
+export function parseURI(hostname: string, uri: string): ProcessOptions {
   const parsedUri = (new URL(uri, `http://${hostname}`))
 
   const objectName = parsedUri.pathname.replace(/^\//, '') // remove leading slash
@@ -34,7 +30,7 @@ export function parseURI(hostname: string, uri: string): ProcessOptions | undefi
     original: decodeURIComponent(objectName),
     settings: {
       format: ImageFormat.ORIGINAL,
-      fit: FitEnum.COVER,
+      fit: 'cover',
       preview: false,
     },
   }
@@ -47,74 +43,65 @@ export function parseURI(hostname: string, uri: string): ProcessOptions | undefi
   const settingsStr = parts[2].split('/').filter(item => !!item)
 
   let hasSettings = false
-  const settings: ProcessSettings = settingsStr.reduce(
-    (memo, entry) => {
-      let res: ProcessSettings = memo
 
-      if (entry.match(MAX_WIDTH_REGEX)) {
-        const maxWidth = parseInt(
-          entry.match(MAX_WIDTH_REGEX)[1],
-        )
+  for (const entry of settingsStr) {
+    const maxWidthMatch = entry.match(MAX_WIDTH_REGEX)
 
-        if (maxWidth) {
-          hasSettings = true
-          res = { ...res, maxWidth }
-        }
+    if (maxWidthMatch) {
+      const maxWidth = parseInt(
+        maxWidthMatch[1],
+        10,
+      )
+
+      if (maxWidth) {
+        result.settings.maxWidth = maxWidth
       }
+    }
 
-      if (entry.match(FORMAT_REGEX)) {
-        const format = ImageFormatFromString(
-          entry.match(FORMAT_REGEX)[1],
-        )
+    const formatMatch = entry.match(FORMAT_REGEX)
 
-        if (format) {
-          hasSettings = true
-          res = { ...res, format }
-        }
-      }
+    if (formatMatch) {
+      const format = ImageFormatFromString(formatMatch[1])
 
-      if (entry.match(SIZE_REGEX)) {
-        const parts = entry.match(SIZE_REGEX)
-
-        if (parts) {
-          const width = parseInt(parts[1], 10)
-          const height = parseInt(parts[2], 10)
-
-          if (width && height) {
-            hasSettings = true
-            res = { ...res, width, height }
-          }
-        }
-      }
-
-      if (entry.match(FIT_REGEX)) {
-        const fit = FitEnumFromString(entry.match(FIT_REGEX)[1])
-
-        if (fit) {
-          hasSettings = true
-          res = { ...res, fit }
-        }
-      }
-
-      if (entry.trim().toLowerCase() === PREVIEW_PARAM) {
+      if (format) {
         hasSettings = true
-        res = { ...res, preview: true }
+        result.settings.format = format
       }
+    }
 
-      return res
-    },
-    result.settings,
-  )
+    const sizeMatch = entry.match(SIZE_REGEX)
 
-  // TODO: error out instead of fallback?
-  if (!hasSettings) {
-    // Missing or unknown options, fallback
-    return result
+    if (sizeMatch) {
+      const width = parseInt(sizeMatch[1], 10)
+      const height = parseInt(sizeMatch[2], 10)
+
+      if (width && height) {
+        hasSettings = true
+        result.settings.width = width
+        result.settings.height = height
+      }
+    }
+
+    const fitMatch = entry.match(FIT_REGEX)
+
+    if (fitMatch) {
+      const fit = FitEnumFromString(fitMatch[1])
+
+      if (fit) {
+        hasSettings = true
+        result.settings.fit = fit
+      }
+    }
+
+    if (entry.trim().toLowerCase() === PREVIEW_PARAM) {
+      hasSettings = true
+      result.settings.preview = true
+    }
   }
 
-  return {
-    ...result,
-    original: decodeURIComponent(original),
-    settings,
+  if (hasSettings) {
+    result.original = decodeURIComponent(original)
   }
+
+  return result
 }

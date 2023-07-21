@@ -9,10 +9,6 @@ export function validateBucket(
   config: Config,
   opts: ProcessOptions,
 ): ProcessOptions | undefined {
-  if (!opts) {
-    return
-  }
-
   if (!config.enable_avif_support && opts.settings.format === ImageFormat.AVIF) {
     req.log.debug('AVIF format is disabled')
     return

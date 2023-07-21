@@ -1,5 +1,5 @@
 # Logs
-logs
+/logs
 *.log
 npm-debug.log*
 yarn-debug.log*
@@ -40,6 +40,9 @@ typings/
 # TypeScript cache
 *.tsbuildinfo
 
+# TypeScript generated files
+*.generated.ts
+
 # Optional npm cache directory
 .npm
 
@@ -64,3 +67,26 @@ typings/
 
 # Typescript built files
 build/
+
+# IDE / Editor
+.idea
+*.iml
+.vscode
+
+# macOS
+.DS_Store
+
+# Vim swap files
+*.swp
+
+# Unit test reports
+junit.xml
+gl-codequality.json
+
+# Draw.io temp files
+*.bkp
+*.dtmp
+
+# Docker
+volumes/
+secrets/

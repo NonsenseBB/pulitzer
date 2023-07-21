@@ -3,22 +3,23 @@ import { Client } from 'minio'
 import { HealthStatus } from '../health/types'
 import config from '../config'
 
-import type { IS3Client } from './types'
 import S3Client from './client'
 
-const CLIENTS: Map<string, IS3Client> = new Map<string, IS3Client>()
+const CLIENTS = new Map<string, S3Client>()
 
-export function getClient(bucketName: string): IS3Client {
+export function getClient(bucketName: string): S3Client {
   if (!bucketName) {
     throw new Error('Missing S3 bucket configuration')
   }
 
-  if (CLIENTS.has(bucketName)) {
-    return CLIENTS.get(bucketName)
+  let client = CLIENTS.get(bucketName)
+
+  if (client) {
+    return client
   }
 
   // TODO: circuit breaker opts
-  const client = new S3Client(new Client(config.s3), bucketName, config.circuitBreaker)
+  client = new S3Client(new Client(config.s3), bucketName, config.circuitBreaker)
 
   CLIENTS.set(bucketName, client)
 

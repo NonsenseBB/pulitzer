@@ -24,6 +24,7 @@ export default function withTransformRoute(app: Express): Express {
 
           if (!opts) {
             throwNotFoundError()
+            return
           }
 
           const s3 = getClient(opts.bucket)

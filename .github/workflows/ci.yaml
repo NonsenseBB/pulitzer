@@ -8,42 +8,34 @@ on:
       - dependabot/**
   pull_request:
     types: [opened, synchronize, reopened, ready_for_review]
+    branches:
+      - master
 
 jobs:
   tests:
     name: Tests
     runs-on: ubuntu-latest
+
     steps:
-      - uses: actions/checkout@v2
+      - name: Check out the repo
+        uses: actions/checkout@v3
 
       - name: Use Node.js ${{ matrix.node-version }}
-        uses: actions/setup-node@v1
+        uses: actions/setup-node@v3
         with:
-          node-version: 18.x
-
-      - name: Cache node modules
-        uses: actions/cache@v1
-        env:
-          cache-name: cache-node-modules
-        with:
-          path: ~/.npm
-          key: ${{ runner.os }}-build-${{ env.cache-name }}-${{ hashFiles('**/package-lock.json') }}
-          restore-keys: |
-            ${{ runner.os }}-build-${{ env.cache-name }}-
-            ${{ runner.os }}-build-
-            ${{ runner.os }}-
+          node-version-file: 'package.json'
+          cache: 'npm'
 
       - name: Install dependencies
-        run: npm install
-
-      - name: Build
-        run: npm run validate:types
+        run: npm ci --no-audit --prefer-offline
 
       - name: Lint
         run: npm run lint
+        env:
+          CI: true
 
       - name: Test
-        run: npm test
+        run: npm run test:ci
         env:
           CI: true
 
@@ -54,7 +46,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Check out the repo
-        uses: actions/checkout@v2
+        uses: actions/checkout@v3
 
       - name: Push to Docker Hub
         uses: docker/build-push-action@v1
@@ -72,7 +64,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Check out the repo
-        uses: actions/checkout@v2
+        uses: actions/checkout@v3
 
       - name: Push to GitHub Packages
         uses: docker/build-push-action@v1

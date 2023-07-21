@@ -16,7 +16,7 @@ describe('image/transformer/format', () => {
       })
     })
 
-    Object.keys(ImageFormat).forEach(format => {
+    Object.values(ImageFormat).forEach((format) => {
       const isOriginal = format === ImageFormat.ORIGINAL
 
       it(`Returns correct result when format is "${format.toString()}"`, () => {

@@ -1,11 +1,10 @@
-import type { Request } from 'express'
+import type { Request} from 'express'
 
-import type { ProcessOptions } from '../types'
-import { ImageFormat } from '../types'
 import type { Config, S3Config } from '../config/types'
+import type { ProcessOptions, ProcessSettings } from '../types'
+import { ImageFormat } from '../types'
 
 import { validateBucket } from './validation'
-
 
 const DUMMY_S3_CONFIG: S3Config = {
   accessKey: 'xxx',
@@ -16,9 +15,9 @@ const DUMMY_S3_CONFIG: S3Config = {
 }
 
 const DUMMY_CONFIG: Config = {
-  circuitBreaker: undefined,
+  circuitBreaker: { enabled: false },
   enable_avif_support: false,
-  http: undefined,
+  http: { port: 80, max_age: 3600, path_separator: '__processed' },
   s3: DUMMY_S3_CONFIG,
   show_transformed_header: false,
   store_images: false,
@@ -27,15 +26,16 @@ const DUMMY_CONFIG: Config = {
   },
 }
 
-const DUMMY_SETTINGS = {
+const DUMMY_SETTINGS: ProcessSettings = {
   format: ImageFormat.ORIGINAL,
-  fit: undefined,
+  fit: 'cover',
   preview: false,
 }
 
 const DUMMY_OPTS: ProcessOptions = {
   bucket: 'example.com',
   original: 'my-file.png',
+  transformed: 'my-file.png',
   settings: DUMMY_SETTINGS,
 }
 
