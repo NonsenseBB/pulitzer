@@ -1,0 +1,33 @@
+{
+  "compilerOptions": {
+    "allowJs": true,
+
+    "pretty": true,
+    "lib": ["ESNext"],
+    "target": "ESNext",
+    "module": "CommonJS",
+    "moduleResolution": "node",
+    "resolveJsonModule": true,
+    "esModuleInterop": true,
+
+    "declaration": true,
+    "declarationMap": true,
+    "sourceMap": true,
+    "composite": true,
+    "noEmitOnError": true,
+
+    "strict": true,
+    "strictBindCallApply": false,
+    "strictNullChecks": true,
+    "strictFunctionTypes": false,
+    "useUnknownInCatchVariables": false,
+    "noImplicitOverride": true,
+
+    "skipLibCheck": true,
+
+    "alwaysStrict": true,
+    "preserveConstEnums": true,
+    "newLine": "lf"
+  },
+  "files": [],
+}

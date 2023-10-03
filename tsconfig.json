@@ -1,58 +1,24 @@
 {
+  "extends": "./tsconfig.base",
   "compilerOptions": {
-    "outDir": "build",
-
-    "allowJs": true,
-
-    "pretty": true,
-    "lib": ["es2022"],
-    "target": "es2022",
-    "module": "CommonJS",
-    "moduleResolution": "node",
-    "resolveJsonModule": true,
-    "esModuleInterop": true,
-
-    "declaration": true,
-    "declarationMap": true,
-    "sourceMap": true,
-    "composite": true,
-    "noEmitOnError": true,
-
-    "skipLibCheck": true,
-
-    "strict": true,
-    "strictBindCallApply": false,
-    "strictNullChecks": true,
-    "strictFunctionTypes": false,
-    "useUnknownInCatchVariables": false,
-    "noImplicitOverride": true,
-
-    "noUnusedLocals": false,
-    "noUnusedParameters": false,
-    "allowUnusedLabels": false,
-
-    "alwaysStrict": true,
-    "preserveConstEnums": true,
-    "newLine": "lf"
+    "outDir": "build"
   },
   "include": [
-    "./src/**/*",
-    "./src/**/*.json"
+    "./**/*",
+    "./**/*.json"
   ],
   "exclude": [
-    "build",
+    "dist",
     "node_modules",
     "jest.config.js",
-    "./tests/**",
-    "./src/**/*.spec.ts",
-    "./src/**/*.spec.js",
-    "./src/**/*.test.ts",
-    "./src/**/*.test.js",
-    "./src/**/__tests__/**",
     "package.json",
     "tsconfig.json",
+    "tsconfig.build.json"
   ],
-  "references": [],
+  "references": [
+    { "path": "../common/tsconfig.json" },
+    { "path": "../eslint/tsconfig.json" },
+  ],
   "ts-node": {
     "swc": true
   }

@@ -1,9 +1,6 @@
 import type { Express } from 'express'
-import { ulid } from 'ulid'
 import pinoHttp from 'pino-http'
-// eslint-disable-next-line @typescript-eslint/ban-ts-comment
-// @ts-ignore
-import URL from 'fast-url-parser'
+import { randomUUID } from 'node:crypto'
 
 import { HEALTH_ENDPOINT } from '../health'
 
@@ -13,11 +10,17 @@ export function withLogger(app: Express): Express {
   app.use(
     pinoHttp({
       logger,
-      genReqId: () => ulid(),
+      genReqId: () => randomUUID(),
       autoLogging: {
-        ignore: (req) => HEALTH_ENDPOINT === URL.parse(req.url).pathname
-      }
-    })
+        ignore: (req) => {
+          try {
+            return HEALTH_ENDPOINT === new URL(req.url).pathname
+          } catch (e) {
+            return false
+          }
+        },
+      },
+    }),
   )
 
   return app
