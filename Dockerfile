@@ -1,4 +1,4 @@
-FROM node:18-bookworm AS builder
+FROM node:18-alpine AS builder
 
 WORKDIR /usr/src/app
 
@@ -9,11 +9,9 @@ COPY tsconfig*.json ./
 COPY src ./src
 RUN npm run build
 
-FROM node:18-bookworm-slim
+FROM node:18-alpine
 
-RUN apt-get update \
-    && apt-get install -y tini \
-    && rm -rf /var/lib/apt/lists/*
+RUN apk add --no-cache tini curl
 
 WORKDIR /app
 
@@ -21,10 +19,6 @@ COPY package*.json ./
 RUN npm ci --quiet --only=production && npm cache clean --force
 
 COPY --from=builder /usr/src/app/build ./build
-
-RUN chown -R node:node /app
-
-USER node
 
 ENV NODE_ENV=production
 ENV HTTP_PORT 80
