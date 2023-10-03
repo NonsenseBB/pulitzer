@@ -46,6 +46,7 @@ export type ProcessSettings = {
   maxWidth?: number;
   width?: number;
   height?: number;
+  quality?: number;
   fit: keyof FitEnum;
   preview: boolean;
 }

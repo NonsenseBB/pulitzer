@@ -47,8 +47,13 @@ export function buildFormatOptions(settings: ProcessSettings): FormatOptionsResu
     formatOptions = { quality: 40 }
   }
 
+  if (settings.quality) {
+    // TODO: support quality when format is `ORIGINAL`
+    formatOptions = { quality: settings.quality }
+  }
+
   return {
-    format: <keyof FormatEnum> format?.toString().toLowerCase(),
-    formatOptions
+    format: <keyof FormatEnum>format?.toString().toLowerCase(),
+    formatOptions,
   }
 }

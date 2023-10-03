@@ -37,6 +37,7 @@ Will proxy to:
 - `mw-<width>` - max width of `<width>` pixels
 - `<width>x<height>` - resizes the image to a given `<width>` and `<height>`. If max width is enabled works as a ratio instead
 - `ff-<format>` - converts the result to one of JPEG, PNG, WEBP or (optionally) AVIF
+- `q-<value>` - set the quality of the resulting image. Only applies when format is set. `<value>` must be an integer between 1 and 100.
 - `preview` - will blur and scale the image to provide a placeholder image (42x42px jpeg by default)
 - `<fit>` - Allows the control of the "fit" of the image when resizing. Allowed values are `cover|contain|fill|inside|outside`. [For more info check Sharp's documentation](https://sharp.pixelplumbing.com/api-resize)
 

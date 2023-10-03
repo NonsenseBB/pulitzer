@@ -11,6 +11,7 @@ import {
 const MAX_WIDTH_REGEX = /mw-(\d+)/i
 const FORMAT_REGEX = /ff-(png|webp|jpeg|jpg|avif)/i
 const SIZE_REGEX = /(\d+)x(\d+)/i
+const QUALITY_REGEX = /q-(\d+)/i
 const FIT_REGEX = /(cover|contain|fill|inside|outside)/i
 const PREVIEW_PARAM = 'preview'
 
@@ -79,6 +80,18 @@ export function parseURI(hostname: string, uri: string): ProcessOptions {
         hasSettings = true
         result.settings.width = width
         result.settings.height = height
+      }
+    }
+
+    const qualityMatch = entry.match(QUALITY_REGEX)
+
+    if (qualityMatch) {
+      const quality = parseInt(qualityMatch[1], 10)
+
+      // TODO: return bad request for wrong settings
+      if (quality && quality > 0 && quality <= 100) {
+        hasSettings = true
+        result.settings.quality = quality
       }
     }
 

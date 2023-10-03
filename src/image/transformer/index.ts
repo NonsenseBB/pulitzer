@@ -32,7 +32,10 @@ export function buildTransformer(
 
 export function needsTransform(opts: ProcessOptions): boolean {
   const { settings } = opts
-  const isResized = settings.maxWidth !== undefined || settings.width !== undefined
 
-  return isResized || settings.format !== ImageFormat.ORIGINAL || settings.preview
+  const isResized = settings.maxWidth !== undefined || settings.width !== undefined
+  const hasFormatChange = settings.format !== ImageFormat.ORIGINAL
+  const isPreview = settings.preview
+
+  return isResized || hasFormatChange || isPreview
 }
