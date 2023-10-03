@@ -1,3 +1,5 @@
+import { describe, it, expect } from 'vitest'
+
 import { buildSettings } from '../../utils/test/types'
 import { ImageFormat } from '../../types'
 

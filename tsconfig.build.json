@@ -3,7 +3,7 @@
   "exclude": [
     "dist",
     "node_modules",
-    "jest.config.js",
+    "vitest.config.mts",
     "package.json",
     "tsconfig.json",
     "tsconfig.build.json",

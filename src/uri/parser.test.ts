@@ -1,3 +1,5 @@
+import { describe, it, expect } from 'vitest'
+
 import type { ProcessOptions } from '../types'
 import { ImageFormat } from '../types'
 
