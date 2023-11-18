@@ -39,7 +39,7 @@
     "opossum": "^8.0.1",
     "pino": "^8.14.1",
     "pino-http": "^8.3.3",
-    "sharp": "^0.32.4",
+    "sharp": "^0.32.6",
     "ulid": "^2.3.0"
   },
   "devDependencies": {
