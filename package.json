@@ -1,6 +1,6 @@
 {
   "name": "pulitzer",
-  "version": "0.10.0-dev",
+  "version": "0.10.0",
   "description": "Image resizing proxy",
   "main": "build/src/index.js",
   "engines": {
