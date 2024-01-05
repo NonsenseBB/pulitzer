@@ -2,12 +2,12 @@
   "name": "pulitzer",
   "version": "0.10.0-dev",
   "description": "Image resizing proxy",
-  "main": "dist/src/index.js",
+  "main": "build/src/index.js",
   "engines": {
     "node": ">= 18.0.0"
   },
   "scripts": {
-    "start": "node ./build/index.js",
+    "start": "node ./build/src/index.js",
     "debug": "NODE_ENV=development nodemon | pino-pretty",
     "build": "tsc",
     "clean": "rimraf coverage build src/**/*.generated.*",

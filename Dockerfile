@@ -27,4 +27,4 @@ HEALTHCHECK CMD curl --fail http://localhost:${HTTP_PORT}/__health || exit 1
 
 ENTRYPOINT ["/sbin/tini", "--"]
 
-CMD ["node", "./build/index.js"]
+CMD ["node", "./build/src/index.js"]
